@@ -1,14 +1,14 @@
 import React from 'react'
-import Colors from '../../../costants/Colors'
+import Colors from '../costants/Colors'
 import { StyleSheet, View } from 'react-native'
 import { SliderBox } from 'react-native-image-slider-box'
 
 export default function Silder () {
   const images = [
-    require('../../../assets/images/Promotion.png'),
-    require('../../../assets/images/Slider.png'),
-    require('../../../assets/images/Promotion.png'),
-    require('../../../assets/images/Slider.png'),
+    require('../assets/images/Promotion.png'),
+    require('../assets/images/Slider.png'),
+    require('../assets/images/Promotion.png'),
+    require('../assets/images/Slider.png'),
   ]
   return (
     <View style={styles.container}>

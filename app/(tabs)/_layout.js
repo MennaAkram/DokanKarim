@@ -4,7 +4,9 @@ import Colors from "../../costants/Colors";
 
 export default function _layout() {
   return (
-    <Tabs screenOptions={{headerShown: false, tabBarItemStyle: {padding:16}, tabBarStyle:{height: 68}}} >
+    <Tabs screenOptions={{
+      headerShown: false, tabBarItemStyle: {padding:16}, tabBarStyle:{height: 68}
+      }} >
       <Tabs.Screen name="Home"  options={{
         tabBarActiveTintColor: Colors.primary,
         tabBarIcon: ({focused}) => (

@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Dimensions, Pressable } from "react-native";
 import Colors from "../costants/Colors";
-import Stars from "react-native-stars";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import ReviewStars from "./ReviewStars";
+import { useRouter } from "expo-router";
 
 export default function ProductCard({
   image,
@@ -10,38 +11,35 @@ export default function ProductCard({
   marketName,
   priceText,
 }) {
+  const router = useRouter();
+    const [isFavorite, setIsFavorite] = React.useState(false);
+    const handleFavorite = () => {
+      setIsFavorite(!isFavorite);
+    };
+
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container}
+    onPress={() => router.replace("/productDetails")}>
       <Image style={styles.image} source={image} />
       <View style={styles.textContainer}>
         <Text style={styles.titleText}>{titleText}</Text>
         <Text style={styles.marketName}>{marketName}</Text>
-        <View style={{ alignItems: "flex-start" , marginTop: 4}}>
-          <Stars 
-          style={{alignItems: "flex-start", marginTop: 4}}
-            default={2.5}
-            count={5}
-            half={true}
-            starSize={12}
-            fullStar={<Icon name={"star"} style={[styles.starStyle]} />}
-            emptyStar={
-              <Icon
-                name={"star-outline"}
-                style={[styles.starStyle, styles.starStyle]}
-              />
-            }
-            halfStar={<Icon name={"star-half"} style={[styles.starStyle]} />}
-          />
-        </View>
-        <Text style={styles.priceText}>{priceText}</Text>
+        <ReviewStars/>
       </View>
-    </View>
+      <View style={styles.semiContainer}>
+        <Text style={styles.priceText}>{priceText}</Text>
+        <Icon name={isFavorite ? "heart" : "heart-outline"} size={16} 
+        color={Colors.red} onPress={handleFavorite}/>
+        </View>
+   </Pressable>
   );
 }
+const windowWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
+  
   container: {
-    width: "45%",
+    width: windowWidth / 2.25,
     borderWidth: 1,
     borderRadius: 5,
     borderColor: Colors.border,
@@ -53,7 +51,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   textContainer: {
-    width: 110,
+    width: windowWidth / 2.8,
     marginTop: 8,
   },
   titleText: {
@@ -72,8 +70,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.primary,
     fontWeight: "bold",
+    alignSelf: "flex-start",
   },
   starStyle: {
     color: Colors.yellow,
+  },
+  semiContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
   },
 });

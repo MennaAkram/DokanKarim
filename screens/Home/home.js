@@ -1,8 +1,8 @@
 import { StyleSheet, StatusBar, SafeAreaView, FlatList } from 'react-native'
 import React from 'react'
-import Silder from './components/silder'
+import Silder from '../../components/silder'
 import SearchBar from './components/searchBar'
-import ComponentTiltle from './components/componentTitle'
+import ComponentTiltle from '../../components/componentTitle'
 import Category from './components/category/category'
 import Markets from './components/markets/Markets'
 import NewProduct from './components/newProduct/NewProduct'
@@ -13,6 +13,7 @@ export default function Home () {
     <SafeAreaView>
     <StatusBar/>
     <FlatList
+    showsVerticalScrollIndicator={false}
     data={[{}]}
     renderItem={({item}) => <>
       <SearchBar/>

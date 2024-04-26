@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   ImageBackground,
+  Dimensions
 } from "react-native";
 import ProductCard from "../../../components/ProductCard";
 import Colors from "../../../costants/Colors";
@@ -70,22 +71,27 @@ export default function RecomendedProducts() {
     </View>
   );
 }
-
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   container: {
-    width: "99%",
+    width: windowWidth,
     marginBottom: 24,
-    marginStart: 8,
+    marginTop: 16,
+    justifyContent: "center",
+    alignItems: "center",
   },
   image: {
-    width: "94%",
-    height: "23%",
+    width: windowWidth,
+    height: windowHeight / 3.75,
     marginHorizontal: 8,
   },
   text: {
     fontSize: 40,
     fontWeight: "bold",
-    margin: 48,
+    marginStart: 42,
+    marginTop: 42,
+    marginBottom: 16,
     width: "60%",
     letterSpacing: 0.5,
     color: Colors.onPrimary,
@@ -93,7 +99,7 @@ const styles = StyleSheet.create({
   subText: {
     fontSize: 16,
     fontWeight: "normal",
-    marginStart: 48,
+    marginStart: 42,
     width: "60%",
     letterSpacing: 0.5,
     color: Colors.onPrimary,
