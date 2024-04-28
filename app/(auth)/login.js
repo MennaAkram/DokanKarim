@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { View, TextInput, StyleSheet, Image, Pressable, Text } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons'; // package from expo/vector-icons
-
+import { MaterialIcons } from '@expo/vector-icons';
+import { Link } from 'expo-router';
+// import LinearGradient from 'react-native-linear-gradient';
 export class Login extends Component {
   render() {
     return (
+
       <View style={styles.container}>
+        {/* <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.linearGradient}> */}
+
         <Image source={require("../../assets/images/logo.png")} style={styles.logo} /> {/*dokkan kareem logo in assets images*/}
         
         
@@ -39,10 +43,12 @@ export class Login extends Component {
         <Text>or</Text>
         <View style={styles.ortext}></View>
         </View>
-      
-        
+        <Text style={styles.signupLinkText}>Don't have an account? </Text>
+        <Link href={"/signup"} style={styles.signupLinkText}>Sign Up
+        </Link>
+        {/* </LinearGradient> */}
         </View>
-        
+       
     );
   }
 
@@ -89,6 +95,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
+    marginLeft : 10,
   },
   loginButton: {
     backgroundColor: '#007bff',
