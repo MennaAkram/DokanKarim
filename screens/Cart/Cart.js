@@ -1,23 +1,12 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { items } from '../notifications/Item'; // Import the items array
 
-export default function Cart() {
+export default function Cart({}) {
   const router = useRouter();
-
-  const [cartItems, setCartItems] = useState([
-    {
-      id: '1',
-      name: 'Nike Air Zoom Pegasus 36 Miami',
-      imageUrl: 'https://cdn.thewirecutter.com/wp-content/media/2023/05/running-shoes-2048px-9718.jpg',
-      price: 100,
-      quantity: 0,
-      heartClicked: false,
-      deleteClicked: false,
-    },
-    // Add more items to cartItems array as needed
-  ]);
+  const [cartItems, setCartItems] = useState(items); // Initialize cartItems with items
 
   const onPressHeart = (itemId) => {
     setCartItems((prevItems) =>
@@ -51,39 +40,31 @@ export default function Cart() {
     );
   };
 
-
   const renderCartItem = ({ item }) => {
     return (
       <View style={styles.cart_container}>
-    {/* <View style={styles.imageContainer}> */}
-      <Image style={styles.image} source={{ uri: item.imageUrl }} />
-    {/* </View> */}
-    <View style={{ marginLeft: 20 }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        {/* <View style={{ flex: 1 }}> */}
-          <Text style={{ width: '60%' }}>{item.name}</Text>
-          {/* <Text style={{ height: 18 }}>{secondLine}</Text> */}
-        {/* </View> */}
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
-          <Ionicons name="heart" size={16} color={item.heartClicked ? 'white' : 'red'} onPress={() => onPressHeart(item.id)} />
-            <Ionicons name="trash-bin" size={16} style={{ marginLeft: 10 }} 
-            color={item.deleteClicked ? 'white' : 'black'} onPress={() => onPressDelete(item.id)} />
+        <Image style={styles.image} source={{ uri: item.imageUrl }} />
+        <View style={{ marginLeft: 20 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ width: '60%' }}>{item.name}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
+              <Ionicons name="heart" size={16} color={item.heartClicked ? 'white' : 'red'} onPress={() => onPressHeart(item.id)} />
+              <Ionicons name="trash-bin" size={16} style={{ marginLeft: 10 }} 
+                color={item.deleteClicked ? 'white' : 'black'} onPress={() => onPressDelete(item.id)} />
+            </View>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ marginTop: 5 }}> ${item.price}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10 }}>
+              <Ionicons name="remove-circle" size={24} color="black" onPress={() => handleDecrement(item.id)}/>
+              <Text style={{ marginHorizontal: 5 }}>{item.quantity}</Text>
+              <Ionicons name="add-circle" size={24} color="black" onPress={() => handleIncrement(item.id)}/>
+            </View>
+          </View>
         </View>
       </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={{ marginTop: 5 }}> ${item.price}</Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10 }}>
-            <Ionicons name="remove-circle" size={24} color="black" onPress={() => handleDecrement(item.id)}/>
-          <Text style={{ marginHorizontal: 5 }}>{item.quantity}</Text>
-            <Ionicons name="add-circle" size={24} color="black" onPress={() => handleIncrement(item.id)}/>
-        </View>
-      </View>
-    </View>
-  </View>
     );
   };
-
-
 
   const handleCheckout = () => {
     router.replace("/CartSucces");
@@ -91,21 +72,25 @@ export default function Cart() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.appbar}>
-        <Text style={styles.Text}>Your Cart</Text>
-        <View style={styles.line} />
+      <ScrollView style={{flex: 1}}>
+        <View style={styles.appbar}>
+          <Text style={styles.Text}>Your Cart</Text>
+          <View style={styles.line} />
+        </View>
+
+        <FlatList
+          data={cartItems}
+          renderItem={renderCartItem}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ paddingBottom: 100 }} // Adjust paddingBottom to accommodate Checkout button
+        />
+      </ScrollView>
+      
+      <View style={styles.checkoutContainer}>
+        <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
+          <Text style={styles.checkoutButtonText}>Checkout</Text>
+        </TouchableOpacity>
       </View>
-
-      <FlatList
-        data={cartItems}
-        renderItem={renderCartItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingBottom: 80 }} // Adjust paddingBottom to accommodate Checkout button
-      />
-
-      <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
-        <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Checkout</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -113,12 +98,12 @@ export default function Cart() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: 375,
-    height: 812,
+    width: '100%',
+    height: '100%',
   },
   appbar: {
     height: 122,
-    width: 375,
+    width: '100%',
   },
   Text: {
     marginLeft: 10,
@@ -135,46 +120,61 @@ const styles = StyleSheet.create({
   line: {
     borderBottomWidth: 1,
     borderBottomColor: '#F3F6FF',
-    marginBottom: 30,
+    width: '100%',
+    paddingBottom: 10
   },
   cart_container: {
+    backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',
     padding: 20,
     marginLeft: 20,
+    marginTop: 30,
     marginRight: 35,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#F3F6FF',
-
-  },
-  imageContainer: {
-    borderRadius: 10,
-    overflow: 'hidden', // Clip image to border radius
-    marginRight: 20,
   },
   image: {
     width: 80,
     height: 90,
     resizeMode: 'cover',
   },
-  priceCounterContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-  },
   checkoutButton: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-    right: 20,
+    width: '90%',
+    alignSelf: 'center',
     backgroundColor: '#40BFFF',
     alignItems: 'center',
     justifyContent: 'center',
     height: 60,
     borderRadius: 10,
+    position: 'sticky',
+    bottom: 20,
+    left: 20,
+    right: 20,
+    zIndex: 1,
   },
+  checkoutButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  checkoutContainer: {
+    backgroundColor: 'white',
+    height: 80,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  }
 });
-
