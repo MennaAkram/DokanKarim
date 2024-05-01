@@ -1,12 +1,12 @@
-import { StyleSheet, StatusBar, SafeAreaView, FlatList } from 'react-native'
+import { StyleSheet, StatusBar, SafeAreaView, FlatList, View } from 'react-native'
 import React from 'react'
-import Silder from '../../components/silder'
 import SearchBar from './components/searchBar'
 import ComponentTiltle from '../../components/componentTitle'
 import Category from './components/category/category'
 import Markets from './components/markets/Markets'
 import NewProduct from './components/newProduct/NewProduct'
 import RecomendedProducts from './components/RecomendedProducts'
+import Silder from '../../components/silder'
 
 export default function Home () {
   return (
@@ -17,7 +17,9 @@ export default function Home () {
     data={[{}]}
     renderItem={({item}) => <>
       <SearchBar/>
-      <Silder/>
+      {/* <View style={{marginStart:16}}> */}
+      <Silder  />
+      {/* </View> */}
       <ComponentTiltle title='Category' subTitle='More Category'/>
       <Category/>
       <ComponentTiltle title='Markets' subTitle='See More'/>

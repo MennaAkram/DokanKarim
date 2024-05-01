@@ -1,9 +1,10 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import Colors from "../../../costants/Colors";
-import { SliderBox } from "react-native-image-slider-box";
+// import { SliderBox } from "react-native-image-slider-box";
 import ReviewStars from "../../../components/ReviewStars";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Silder from "../../../components/silder";
 
 const images = [
   require("../../../assets/images/Promotion.png"),
@@ -20,16 +21,7 @@ const Details = () => {
 
   return (
     <View>
-      <SliderBox
-        images={images}
-        autoplay
-        circleLoop
-        dotColor={Colors.primary}
-        inactiveDotColor={Colors.border}
-        dotStyle={{ width: 8, height: 8 }}
-        ImageLoadingColor={Colors.primary}
-        ImageComponentStyle={{ marginBottom: 32, height: 300 }}
-      />
+    <Silder/>
       <View style={styles.contentContainer}>
         <Text style={styles.title}>Nike Air Zoom Pegasus 36 Miami</Text>
         <Icon
