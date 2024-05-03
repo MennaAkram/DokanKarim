@@ -130,7 +130,6 @@ export default ProductReviews;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 24,
     marginBottom: 24,
   },
 });

@@ -4,24 +4,20 @@ import { StyleSheet, View, Dimensions, FlatList, Image } from "react-native";
 
 const screenWidth = Dimensions.get("window").width;
 
-export default function Silder() {
+export default function Silder({images}) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const images = [
-    require("../assets/images/Promotion.png"),
-    require("../assets/images/Slider.png"),
-  ];
 
   const renderDots = () => {
-    return images.map((_, i) => {
+    return images.map((_, index) => {
       return (
         <View
-          key={i}
+          key={index}
           style={{
             width: 8,
             height: 8,
             borderRadius: 4,
-            backgroundColor: i === currentSlide ?  Colors.primary : Colors.border,
-            margin: 3,
+            backgroundColor: currentSlide === index ? Colors.primary : Colors.border,
+            margin: 4,
           }}
         />
       );

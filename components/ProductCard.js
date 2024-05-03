@@ -3,23 +3,32 @@ import { View, Text, Image, StyleSheet, Dimensions, Pressable } from "react-nati
 import Colors from "../costants/Colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import ReviewStars from "./ReviewStars";
-import { useRouter } from "expo-router";
+import { useNavigation } from "expo-router";
 
 export default function ProductCard({
+  id,
   image,
   titleText,
   marketName,
   priceText,
+  sizes,
+  colors,
+  reviews,
+  images
 }) {
-  const router = useRouter();
+  const navigation = useNavigation();
     const [isFavorite, setIsFavorite] = React.useState(false);
     const handleFavorite = () => {
       setIsFavorite(!isFavorite);
     };
 
-  return (
-    <Pressable style={styles.container}
-    onPress={() => router.replace("/productDetails")}>
+    const handleProductPress = (productId) => {
+      navigation.navigate('productDetails', { productId, titleText, priceText, sizes, colors, image, reviews, images});
+    }
+    
+    return (
+      <Pressable style={styles.container}
+    onPress={() => handleProductPress(id)}>
       <Image style={styles.image} source={image} />
       <View style={styles.textContainer}>
         <Text style={styles.titleText}>{titleText}</Text>
@@ -35,6 +44,7 @@ export default function ProductCard({
   );
 }
 const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
   
@@ -49,6 +59,7 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     borderRadius: 5,
+    height: windowHeight / 7,
   },
   textContainer: {
     width: windowWidth / 2.8,

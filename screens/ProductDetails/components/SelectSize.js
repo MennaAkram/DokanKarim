@@ -10,7 +10,7 @@ import ComponentTitle from "../../../components/componentTitle";
 import Colors from "../../../costants/Colors";
 import { useState } from "react";
 
-const SelectSize = () => {
+const SelectSize = ({sizes}) => {
   const [selectedSize, setSelectedSize] = useState(null);
  
   return (
@@ -20,7 +20,7 @@ const SelectSize = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{marginHorizontal: 8}}
-        data={["7", "8", "9", "10", "11", "12", "13", "14", "15"]}
+        data={sizes}
         renderItem={({ item, index }) => (
           <TouchableOpacity
           style={[item === selectedSize && styles.selectedItem, {margin: 10}]}

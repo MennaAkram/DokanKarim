@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   ImageBackground,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import ProductCard from "../../../components/ProductCard";
 import Colors from "../../../costants/Colors";
@@ -12,34 +12,159 @@ import Colors from "../../../costants/Colors";
 export default function RecomendedProducts() {
   const DATA = [
     {
-      image: require("../../../assets/images/product.png"),
-      text: "Market name",
-      price: "$100",
+      id: 1,
+      images: [
+        require("../../../assets/images/Promotion.png"),
+        require("../../../assets/images/Promotion.png"),
+        require("../../../assets/images/Promotion.png"),
+        require("../../../assets/images/Promotion.png"),
+      ],
+      text: "Nike Air Zoom Pegasus 36 Miami",
+      marketName: "Nike",
+      price: "$ 100",
+      sizes: ["7", "8", "9", "10", "11", "12", "13", "14"],
+      colors: [ Colors.primary, Colors.blueText, Colors.border, Colors.red,
+        Colors.greyText, Colors.yellow, "#f0f0f0", "#000000", "#ff0000"],
+        reviews: [
+          {
+            name: "James Lawson",
+            date: "December 10, 2024",
+            review:
+              "air max are always very comfortable fit, clean and just perfect in every way. just the box was too small and scrunched the sneakers up a little bit, not sure if the box was always this small but the 90s are and will always be one of my favorites.",
+            stars: 4.5,
+          },
+          {
+            name: "James Lawson",
+            date: "December 10, 2024",
+            review:
+              "air max are always very comfortable fit, clean and just perfect in every way. just the box was too small and scrunched the sneakers up a little bit, not sure if the box was always this small but the 90s are and will always be one of my favorites.",
+            stars: 4.5,
+          },
+          {
+            name: "James Lawson",
+            date: "December 10, 2024",
+            review:
+              "air max are always very comfortable fit, clean and just perfect in every way. just the box was too small and scrunched the sneakers up a little bit, not sure if the box was always this small but the 90s are and will always be one of my favorites.",
+            stars: 4.5,
+          },
+        ]
     },
     {
-      image: require("../../../assets/images/product.png"),
-      text: "Market name",
-      price: "$100",
+      id: 2,
+      images: [
+        require("../../../assets/images/Slider.png"),
+        require("../../../assets/images/Slider.png"),
+        require("../../../assets/images/Slider.png"),
+        require("../../../assets/images/Slider.png"),
+      ],
+      text: "Nike Air Zoom Pegasus 36 Miami",
+      marketName: "Nike",
+      price: "$ 100",
+      sizes: ["7", "8", "9", "10", "11", "12", "13", "14"],
+      colors: [ Colors.primary, Colors.blueText, Colors.border, Colors.red,
+        Colors.greyText, Colors.yellow, "#f0f0f0", "#000000", "#ff0000"],
+        reviews: [
+          {
+            name: "James Lawson",
+            date: "December 10, 2024",
+            review:
+              "air max are always very comfortable fit, clean and just perfect in every way. just the box was too small and scrunched the sneakers up a little bit, not sure if the box was always this small but the 90s are and will always be one of my favorites.",
+            stars: 4.5,
+          },
+          {
+            name: "James Lawson",
+            date: "December 10, 2024",
+            review:
+              "air max are always very comfortable fit, clean and just perfect in every way. just the box was too small and scrunched the sneakers up a little bit, not sure if the box was always this small but the 90s are and will always be one of my favorites.",
+            stars: 4.5,
+          },
+          {
+            name: "James Lawson",
+            date: "December 10, 2024",
+            review:
+              "air max are always very comfortable fit, clean and just perfect in every way. just the box was too small and scrunched the sneakers up a little bit, not sure if the box was always this small but the 90s are and will always be one of my favorites.",
+            stars: 4.5,
+          },
+        ]
     },
     {
-      image: require("../../../assets/images/product.png"),
-      text: "Market name",
-      price: "$100",
+      id: 3,
+      images: [
+        require("../../../assets/images/product.png"),
+        require("../../../assets/images/product.png"),
+        require("../../../assets/images/product.png"),
+        require("../../../assets/images/product.png"),
+      ],
+      text: "Nike Air Zoom Pegasus 36 Miami",
+      marketName: "Nike",
+      price: "$ 100",
+      sizes: ["7", "8", "9", "10", "11", "12", "13", "14"],
+      colors: [ Colors.primary, Colors.blueText, Colors.border, Colors.red,
+        Colors.greyText, Colors.yellow, "#f0f0f0", "#000000", "#ff0000"],
+        reviews: [
+          {
+            id: 1,
+            name: "James Lawson",
+            date: "December 10, 2024",
+            review:
+              "air max are always very comfortable fit, clean and just perfect in every way. just the box was too small and scrunched the sneakers up a little bit, not sure if the box was always this small but the 90s are and will always be one of my favorites.",
+            stars: 4.5,
+          },
+          {
+            id: 2,
+            name: "James Lawson",
+            date: "December 10, 2024",
+            review:
+              "air max are always very comfortable fit, clean and just perfect in every way. just the box was too small and scrunched the sneakers up a little bit, not sure if the box was always this small but the 90s are and will always be one of my favorites.",
+            stars: 4.5,
+          },
+          {
+            id: 3,
+            name: "James Lawson",
+            date: "December 10, 2024",
+            review:
+              "air max are always very comfortable fit, clean and just perfect in every way. just the box was too small and scrunched the sneakers up a little bit, not sure if the box was always this small but the 90s are and will always be one of my favorites.",
+            stars: 4.5,
+          },
+        ]
     },
     {
-      image: require("../../../assets/images/product.png"),
-      text: "Market name",
-      price: "$100",
-    },
-    {
-      image: require("../../../assets/images/product.png"),
-      text: "Market name",
-      price: "$100",
-    },
-    {
-      image: require("../../../assets/images/product.png"),
-      text: "Market name",
-      price: "$100",
+      id: 4,
+      images: [
+        require("../../../assets/images/Promotion.png"),
+        require("../../../assets/images/Slider.png"),
+        require("../../../assets/images/Promotion.png"),
+        require("../../../assets/images/Slider.png"),
+      ],
+      text: "Nike Air Zoom Pegasus 36 Miami",
+      marketName: "Nike",
+      price: "$ 100",
+      sizes: ["7", "8", "9", "10", "11", "12", "13", "14"],
+      colors: [ Colors.primary, Colors.blueText, Colors.border, Colors.red,
+        Colors.greyText, Colors.yellow, "#f0f0f0", "#000000", "#ff0000"],
+        reviews: [
+          {
+            id: 1,
+            name: "John Doe",
+            review: "Great product, I love it",
+            stars: 5,
+            date: "December 10, 2024"
+          },
+          {
+            id: 2,
+            name: "Jane Doe",
+            review: "Great product, I love it",
+            stars: 5,
+            date: "December 10, 2024"
+          },
+          {
+            id: 3,
+            name: "John Doe",
+            review: "Great product, I love it",
+            stars: 5,
+            date: "December 10, 2024"
+          },
+        ]
     },
   ];
 
@@ -59,12 +184,18 @@ export default function RecomendedProducts() {
         showsVerticalScrollIndicator={false}
         numColumns={2}
         data={DATA}
+        keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
           <ProductCard
-            image={item.image}
+            id = {item.id}
+            image={item.images[0]}
             titleText={item.text}
-            marketName={item.text}
+            marketName={item.marketName}
             priceText={item.price}
+            sizes={item.sizes}
+            colors={item.colors}
+            reviews={item.reviews}
+            images={item.images}
           />
         )}
       />
@@ -73,6 +204,7 @@ export default function RecomendedProducts() {
 }
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
+
 const styles = StyleSheet.create({
   container: {
     width: windowWidth,

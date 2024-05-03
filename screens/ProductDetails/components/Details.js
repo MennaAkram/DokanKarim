@@ -1,19 +1,11 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import Colors from "../../../costants/Colors";
-// import { SliderBox } from "react-native-image-slider-box";
 import ReviewStars from "../../../components/ReviewStars";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Silder from "../../../components/silder";
 
-const images = [
-  require("../../../assets/images/Promotion.png"),
-  require("../../../assets/images/Slider.png"),
-  require("../../../assets/images/Promotion.png"),
-  require("../../../assets/images/Slider.png"),
-];
-
-const Details = () => {
+const Details = ({title, price, images}) => {
   const [isFavorite, setIsFavorite] = React.useState(false);
     const handleFavorite = () => {
       setIsFavorite(!isFavorite);
@@ -21,9 +13,9 @@ const Details = () => {
 
   return (
     <View>
-    <Silder/>
+    <Silder images={images}/>
       <View style={styles.contentContainer}>
-        <Text style={styles.title}>Nike Air Zoom Pegasus 36 Miami</Text>
+        <Text style={styles.title}>{title}</Text>
         <Icon
           name={isFavorite ? "heart" : "heart-outline"}
           size={24}
@@ -35,7 +27,7 @@ const Details = () => {
       <View style={{ paddingHorizontal: 16 , paddingVertical: 8}}>
         <ReviewStars />
       </View>
-      <Text style={styles.price}>$ 100</Text>
+      <Text style={styles.price}>{price}</Text>
     </View>
   );
 };

@@ -4,20 +4,7 @@ import ComponentTitle from "../../../components/componentTitle";
 import Colors from "../../../costants/Colors";
 import { useState } from "react";
 
-
-const colors = [
-    Colors.primary,
-    Colors.blueText,
-    Colors.border,
-    Colors.red,
-    Colors.greyText,
-    Colors.yellow,
-    "#f0f0f0",
-    "#000000",
-    "#ff0000",
-    ];
-
-const SelectColor = () => {
+const SelectColor = ({colors}) => {
     const [selectedColor, setSelectedColor] = useState(null);
 
   return (

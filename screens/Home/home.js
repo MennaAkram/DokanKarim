@@ -9,6 +9,10 @@ import RecomendedProducts from './components/RecomendedProducts'
 import Silder from '../../components/silder'
 
 export default function Home () {
+  const images = [
+    require("../../assets/images/Promotion.png"),
+    require("../../assets/images/Slider.png"),
+  ];
   return (
     <SafeAreaView>
     <StatusBar/>
@@ -17,9 +21,7 @@ export default function Home () {
     data={[{}]}
     renderItem={({item}) => <>
       <SearchBar/>
-      {/* <View style={{marginStart:16}}> */}
-      <Silder  />
-      {/* </View> */}
+      <Silder images={images} />
       <ComponentTiltle title='Category' subTitle='More Category'/>
       <Category/>
       <ComponentTiltle title='Markets' subTitle='See More'/>

@@ -1,28 +1,30 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 import React from 'react'
 import Colors from '../costants/Colors'
 
-export default function Button ({text}) {
+const screenWidth = Dimensions.get('window').width;
+
+export default function Button ({text, onPress}) {
   return (
     <View>
-      <TouchableOpacity style={styles.addToCartButton}>
-              <Text style={styles.addToCartButtonText}>{text}</Text>
+      <TouchableOpacity style={styles.Button} onPress={onPress}>
+              <Text style={styles.text}>{text}</Text>
             </TouchableOpacity>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-    addToCartButton: {
+    Button: {
         backgroundColor: Colors.primary,
         padding: 16,
         borderRadius: 8,
-        width: "95%",
+        width: screenWidth - 32,
         alignItems: "center",
         alignSelf: 'center',
         marginTop: 16,
       },
-      addToCartButtonText: {
+      text: {
         color: "white",
         fontWeight: "bold",
       },
