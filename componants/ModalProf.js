@@ -20,6 +20,12 @@ const ModalProf = ({ visible, onRequestClose, onChangeText, onSave, placeholder 
             onChangeText={onChangeText}
             keyboardType={keyboardType}
           />
+                    <TextInput
+            placeholder={"enter the password"}
+            style={styles.modalInput}
+            onChangeText={onChangeText}
+            keyboardType={keyboardType}
+          />
           <Text style={styles.error}>{error}</Text>
           <View style={styles.btnContainer}>
             <TouchableOpacity onPress={onRequestClose}>
