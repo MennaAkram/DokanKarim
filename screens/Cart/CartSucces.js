@@ -12,6 +12,8 @@ export default function CartSucces() {
         <Text style={styles.textButton}>Back to Shopping</Text>
       </TouchableOpacity>
       <Text onPress={() => router.replace('/Notifications')} style={styles.textButton}>not</Text>
+      <Text onPress={() => router.replace('/Order')} style={styles.textButton}>order</Text>
+
     </View>
   );
 };
