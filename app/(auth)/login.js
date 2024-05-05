@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import { View, TextInput, StyleSheet, Image, Pressable, Text } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
-// import LinearGradient from 'react-native-linear-gradient';
+
+
 export class Login extends Component {
   render() {
     return (
 
       <View style={styles.container}>
-        {/* <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.linearGradient}> */}
 
-        <Image source={require("../../assets/images/logo.png")} style={styles.logo} /> {/*dokkan kareem logo in assets images*/}
+
+        <Image source={require("../../assets/images/logo.png")} style={styles.logo} /> 
         
         
         <View style={styles.inputContainer}>
@@ -32,12 +33,12 @@ export class Login extends Component {
           />
         </View>
    
-        {/* Login Button */}
+
         <Pressable onPress={this.handleLogin} style={styles.loginButton}>
           <Text style={styles.loginText}>Login</Text>
         </Pressable>
         
-        {/* Horizontal Line */}
+
         <View style={styles.linecontainer}>
         <View style={styles.ortext}></View>
         <Text>or</Text>
@@ -46,7 +47,7 @@ export class Login extends Component {
         <Text style={styles.signupLinkText}>Don't have an account? </Text>
         <Link href={"/signup"} style={styles.signupLinkText}>Sign Up
         </Link>
-        {/* </LinearGradient> */}
+
         </View>
        
     );

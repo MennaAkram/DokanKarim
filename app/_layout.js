@@ -11,6 +11,8 @@ function RootLayoutNav() {
       <Stack>
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="(auth)"/>
+        <Stack.Screen name="(screens)"/>
+
            </Stack>
   );
 }

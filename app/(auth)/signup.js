@@ -1,18 +1,24 @@
 import { Text, TextInput, Image, View, Pressable, ActivityIndicator,Modal } from "react-native";
-import { StyleSheet } from "react-native-web";
+import { StyleSheet, Switch } from "react-native-web";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import React, { useState, Component } from "react";
 import { CountryPicker } from "react-native-country-codes-picker";
-import { isSearchBarAvailableForCurrentPlatform } from "react-native-screens";
-import * as ImagePicker from "expo-image-picker";
-
+import { launchCameraAsync,launchImageLibraryAsync } from "expo-image-picker";
 const signup = () => {
-  const [cCode, setCountryCode] = useState(" ");
+  //  here some state to get the fileds value
+  const [cCode, setCountryCode] = useState("");
   const [showPicker, setShowPicker] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false); 
-  const [image,setImage]=useState();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [image, setImage] = useState(null);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState(""); 
+  const [error, setError] =useState("");
+  const [isEnabled, setIsEnabled] = useState(false);
   const handlePickerButtonPress = (item) => {
     setCountryCode(item.dial_code);
     setShowPicker(false);
@@ -26,13 +32,31 @@ const saveImage =async (image)=>{
     }
 
 }
-  const handleSignup = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false); 
-      alert("Signup successful!");
-    }, 2000);
-  };
+const handleSignup = () => {
+
+  if (!username || !password || !confirmPassword || !email || !phone) {
+    alert("All fields are required!");
+    return;
+  }
+  else if(password != confirmPassword){
+    setError("password not matched");
+  }
+else{
+  setError("");
+  setIsLoading(true);
+  setTimeout(() => {
+    setIsLoading(false);
+    alert("Signup successful!");
+  }, 2000);
+  console.log(username);
+  console.log(password);
+  console.log(confirmPassword);
+  console.log(phone);
+  console.log(password);
+  console.log(email);
+}};
+
+const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   const handleUploadPhoto = () => {
     setModalVisible(true); 
@@ -41,16 +65,10 @@ const saveImage =async (image)=>{
 const uploadImage =async()=>
 {
     try {
-        await ImagePicker.requestCameraPermissionsAsync
-        let result = await ImagePicker.launchCameraAsync({
-            cameraType:ImagePicker.CameraType.front,
-            allowsEditing:true,
-            aspect: [1,1],
-            quality:1
-        })
-        if(!result.canceled){
-                saveImage(result.assets[0].uri);
-        }
+    const response =await launchImageLibraryAsync()
+      setImage(response.assets[0].uri)
+ 
+        
     } catch (error) {
         alert("there is an error")
         setModalVisible(flase)
@@ -67,10 +85,10 @@ const uploadImage =async()=>
       ) : (
         <>
           <Image
-            source={require("../../assets/images/logo.png")}
+            source={image ? { uri: image } : require('../../assets/images/logo.png')}
             style={styles.logo}
           /><View style={styles.circle}>
-            <Pressable onPress={handleUploadPhoto} style={styles.changephoto}>
+            <Pressable onPress={uploadImage}  style={styles.changephoto}>
               <AntDesign name="camera" size={24} color="black" />
             </Pressable>
           </View>
@@ -81,6 +99,7 @@ const uploadImage =async()=>
               style={styles.input}
               placeholder="User name"
               placeholderTextColor="#888"
+              onChangeText={(text)=>setUsername(text)}
             />
           </View>
           <View style={styles.inputContainer}>
@@ -90,7 +109,9 @@ const uploadImage =async()=>
               placeholder="Password"
               placeholderTextColor="#888"
               secureTextEntry={true}
+              onChangeText={(text)=>setPassword(text)}
             />
+            <Text style={{color:'red',marginLeft:10}}>{error}</Text>
           </View>
           <View style={styles.inputContainer}>
             <MaterialIcons
@@ -104,6 +125,7 @@ const uploadImage =async()=>
               placeholder="Re-Enter your Password"
               placeholderTextColor="#888"
               secureTextEntry={true}
+              onChangeText={(text)=>setConfirmPassword(text)}
             />
           </View>
           <View style={styles.inputContainer}>
@@ -112,6 +134,7 @@ const uploadImage =async()=>
               style={styles.input}
               placeholder="Email"
               placeholderTextColor="#888"
+              onChangeText={(text)=>setEmail(text)}
             />
           </View>
           <View style={styles.inputContainer}>
@@ -127,8 +150,20 @@ const uploadImage =async()=>
               style={styles.input}
               placeholder="Phone"
               placeholderTextColor="#888"
+              onChangeText={(text)=>setPhone(cCode+text)}
             />
+            
           </View>
+        {/* <View style= {styles.marketContainer}> 
+          <Text style={styles.marketText}>Do You want to open a Market?</Text>
+          <Switch
+        trackColor={{false: '#767577', true: '#81b0ff'}}
+        thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+        ios_backgroundColor="#3e3e3e"
+         onValueChange={toggleSwitch}
+         value={isEnabled}
+      />
+      </View> */}
           <Pressable style={styles.submitButton} onPress={handleSignup}>
             <Text style={styles.submitText}>Sign Up</Text>
           </Pressable>
@@ -147,6 +182,7 @@ const uploadImage =async()=>
               <Text>Upload Photo</Text>
             </View>
           </Modal>
+       
         </>
       )}
     </View>
@@ -155,6 +191,13 @@ const uploadImage =async()=>
 
 
 const styles = StyleSheet.create({
+  // marketContainer: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  // },
+  // marketText: {
+  //   marginRight: 10, // Adjust the spacing between the text and the switch
+  // },
     modalView: {
         justifyContent: 'center',
         alignItems: 'center',
