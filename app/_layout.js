@@ -12,6 +12,9 @@ function RootLayoutNav() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="Markets" options={{ headerShown: false }} />
+        <Stack.Screen name="Categories" options={{ headerShown: false }} />
+        <Stack.Screen name="Products" options={{ headerShown: false }} />
         <Stack.Screen name="productDetails" options={{ headerShown: false}} />
       </Stack>
   );

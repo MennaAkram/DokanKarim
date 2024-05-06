@@ -1,11 +1,15 @@
 import { useRouter } from "expo-router";
 import { Text, View } from "react-native";
+import Markets from "../../screens/admin/Markets/Markets";
+import { StatusBar } from "expo-status-bar";
+import Colors from "../../costants/Colors";
 
 export default function User(){
     const router = useRouter();
     return (
-        <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-            <Text>Explore</Text>
+        <View >
+        <StatusBar hidden={true}/>
+            <Markets/>
         </View>
     )
 }

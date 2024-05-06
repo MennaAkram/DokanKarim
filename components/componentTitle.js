@@ -1,12 +1,14 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import React from "react";
 import Colors from "../costants/Colors";
 
-export default function ComponentTitle({ title, subTitle }) {
+export default function ComponentTitle({ title, subTitle, onPress }) {
   return (
     <View style={styles.container}>
       <Text style={styles.titleText}>{title}</Text>
+      <Pressable onPress={onPress}>
       <Text style={styles.subTitleText}>{subTitle}</Text>
+      </Pressable>
     </View>
   );
 }
