@@ -6,7 +6,9 @@ import { items } from '../notifications/Item'; // Import the items array
 
 export default function Cart({}) {
   const router = useRouter();
-  const [cartItems, setCartItems] = useState(items); // Initialize cartItems with items
+  const [cartItems, setCartItems] = useState(items.map(item => ({ ...item, quantity: 1, totalPrice: 100 })));
+  
+  // Initialize cartItems with items
 
   const onPressHeart = (itemId) => {
     setCartItems((prevItems) =>
@@ -27,7 +29,13 @@ export default function Cart({}) {
   const handleIncrement = (itemId) => {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
-        item.id === itemId ? { ...item, quantity: item.quantity + 1 } : item
+        item.id === itemId
+          ? {
+              ...item,
+              quantity: item.quantity + 1,
+              totalPrice: (item.quantity + 1) * item.price // Recalculate total price
+            }
+          : item
       )
     );
   };
@@ -35,7 +43,13 @@ export default function Cart({}) {
   const handleDecrement = (itemId) => {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
-        item.id === itemId ? { ...item, quantity: item.quantity > 0 ? item.quantity - 1 : 0 } : item
+        item.id === itemId
+          ? {
+              ...item,
+              quantity: item.quantity > 0 ? item.quantity - 1 : 0,
+              totalPrice: (item.quantity > 0 ? item.quantity - 1 : 0) * item.price // Recalculate total price
+            }
+          : item
       )
     );
   };
@@ -54,7 +68,7 @@ export default function Cart({}) {
             </View>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ marginTop: 5 }}> ${item.price}</Text>
+            <Text style={{ marginTop: 5 }}> ${item.totalPrice}</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10 }}>
               <Ionicons name="remove-circle" size={24} color="black" onPress={() => handleDecrement(item.id)}/>
               <Text style={{ marginHorizontal: 5 }}>{item.quantity}</Text>

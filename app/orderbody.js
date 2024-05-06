@@ -7,13 +7,7 @@ export default function OrderBody() {
   const router = useRouter();
   // const [detailModalVisible, setDetailModalVisible] = useState(false);
 
-  function handleOrder() {
-   router.push("/OrderDetails");
-  }
-
-  // function closeModal() {
-  //   setDetailModalVisible(false);
-  // }
+  
 
   return (
     <View style={styles.container}>
