@@ -47,7 +47,7 @@ export default function OrderDetails() {
         data={cartItems}
         renderItem={renderCartItem}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingBottom: 30 }} // Adjust paddingBottom to accommodate Checkout button
+        contentContainerStyle={{ paddingBottom: 10 }} // Adjust paddingBottom to accommodate Checkout button
       />
 
       {/* Shipping Details */}
