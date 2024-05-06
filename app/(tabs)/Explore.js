@@ -7,10 +7,12 @@ import {
   View,
   TextInput,
 } from "react-native";
+import SearchBar from "../../components/SearchBar";
 
 export default function User() {
   const [filterData, setFilterData] = useState([]);
   const [masterData, setMasterData] = useState([]);
+  const [filter, setFilter] = useState(true);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
@@ -65,19 +67,16 @@ export default function User() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <SearchBar />
       <View style={styles.container}>
-        <TextInput
-          style={styles.textInputStyle}
-          value={search}
-          placeholder="Search Here "
-          onChangeText={searchFilter}
-        />
-        <FlatList
-          data={filterData}
-          keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={ItemSeparatorView}
-          renderItem={ItemView}
-        />
+        {(filter === true && true) || (
+          <FlatList
+            data={filterData}
+            keyExtractor={(item, index) => index.toString()}
+            ItemSeparatorComponent={ItemSeparatorView}
+            renderItem={ItemView}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
@@ -98,6 +97,6 @@ const styles = StyleSheet.create({
     margin: 15,
     borderColor: "#009688",
     backgroundColor: "white",
-    borderRadius: 5,
+    borderRadius: 10,
   },
 });
