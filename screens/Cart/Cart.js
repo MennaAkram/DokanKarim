@@ -149,9 +149,6 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 10,
     position: 'sticky',
-    bottom: 20,
-    left: 20,
-    right: 20,
     zIndex: 1,
   },
   checkoutButtonText: {

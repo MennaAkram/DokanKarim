@@ -11,8 +11,8 @@ export default function CartSucces() {
       <TouchableOpacity onPress={() => router.replace('/Home')} style={styles.button}>
         <Text style={styles.textButton}>Back to Shopping</Text>
       </TouchableOpacity>
-      <Text onPress={() => router.replace('/Notifications')} style={styles.textButton}>not</Text>
-      <Text onPress={() => router.replace('/Order')} style={styles.textButton}>order</Text>
+      <Text onPress={() => router.replace('/Notifications')} style={{color:"black", marginTop:15}}>not</Text>
+      <Text onPress={() => router.replace('/Order')} style={{color:"black" , marginTop:15}}>Order</Text>
 
     </View>
   );
@@ -61,6 +61,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: '#ffff',
   },
 });

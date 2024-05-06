@@ -5,15 +5,15 @@ import { useRouter } from 'expo-router';
 
 export default function OrderBody() {
   const router = useRouter();
-  const [detailModalVisible, setDetailModalVisible] = useState(false);
+  // const [detailModalVisible, setDetailModalVisible] = useState(false);
 
   function handleOrder() {
-    setDetailModalVisible(true);
+   router.push("/OrderDetails");
   }
 
-  function closeModal() {
-    setDetailModalVisible(false);
-  }
+  // function closeModal() {
+  //   setDetailModalVisible(false);
+  // }
 
   return (
     <View style={styles.container}>
@@ -24,7 +24,7 @@ export default function OrderBody() {
       <View style={styles.lineDivider}></View>
 
       <View style={styles.orderItem}>
-        <TouchableOpacity onPress={handleOrder}>
+        <TouchableOpacity onPress={()=>router.push("/OrderDetails")}>
           <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
             <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: 14, margin: 10 }}>LqNs</Text>
             <Text style={{ fontWeight: 'bold', color: '#DADADA', fontSize: 14, margin: 10 }}>Augest 1,2007</Text>
@@ -51,7 +51,7 @@ export default function OrderBody() {
       </View>
 
       {/* Modal for Order Details */}
-      <Modal
+      {/* <Modal
         animationType="slide"
         transparent={true}
         visible={detailModalVisible}
@@ -71,7 +71,7 @@ export default function OrderBody() {
             </TouchableOpacity>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
     </View>
   );
 }
