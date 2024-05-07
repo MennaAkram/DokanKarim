@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Modal, Dimensions, FlatList, 
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
-export default function OrderBody() {
+export default function OrderBody( ) {
   const router = useRouter();
   // const [detailModalVisible, setDetailModalVisible] = useState(false);
 

@@ -1,13 +1,45 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList, ScrollView } from 'react-native'; // Import AsyncStorage
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { items } from '../notifications/Item'; // Import the items array
+import { items } from '../notifications/Item';
 
 export default function Cart({}) {
   const router = useRouter();
-  const [cartItems, setCartItems] = useState(items.map(item => ({ ...item, quantity: 1, totalPrice: 100 })));
-  
+  const [cartItems, setCartItems] = useState([]);
+
+  // Load cart items from AsyncStorage when the component mounts
+  useEffect(() => {
+    const loadCartItems = async () => {
+      try {
+        const savedCartItems = await AsyncStorage.getItem('cartItems');
+        if (savedCartItems) {
+          setCartItems(JSON.parse(savedCartItems));
+        } else {
+          // If there are no items in AsyncStorage, initialize with items array
+          setCartItems(items.map(item => ({ ...item, quantity: 1, totalPrice: item.price })));
+        }
+      } catch (error) {
+        console.error('Error loading cart items:', error);
+      }
+    };
+
+    loadCartItems();
+  }, []);
+
+  // Save cart items to AsyncStorage when cartItems changes
+  useEffect(() => {
+    const saveCartItems = async () => {
+      try {
+        await AsyncStorage.setItem('cartItems', JSON.stringify(cartItems));
+      } catch (error) {
+        console.error('Error saving cart items:', error);
+      }
+    };
+
+    saveCartItems();
+  }, [cartItems]);
   // Initialize cartItems with items
 
   const onPressHeart = (itemId) => {
@@ -19,13 +51,11 @@ export default function Cart({}) {
   };
 
   const onPressDelete = (itemId) => {
+  
     setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === itemId ? { ...item, deleteClicked: !item.deleteClicked } : item
-      )
+      prevItems.filter((item) => item.id !== itemId)
     );
   };
-
   const handleIncrement = (itemId) => {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
@@ -81,6 +111,7 @@ export default function Cart({}) {
   };
 
   const handleCheckout = () => {
+    // Implement your checkout send the item list to the firebase
     router.replace("/CartSucces");
   };
 
@@ -92,11 +123,11 @@ export default function Cart({}) {
         </View>
 
         <FlatList
-          data={cartItems}
-          renderItem={renderCartItem}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={{ paddingBottom: 100 }} // Adjust paddingBottom to accommodate Checkout button
-        />
+        data={cartItems}
+        renderItem={renderCartItem}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={{ paddingBottom: 100 }}
+      />
       
       <View style={styles.checkoutContainer}>
         <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
