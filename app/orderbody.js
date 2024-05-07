@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Modal, Dimensions, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Modal, Dimensions, FlatList, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
@@ -11,6 +11,7 @@ export default function OrderBody() {
 
   return (
     <View style={styles.container}>
+      <ScrollView style={styles.ScrollView}>
       <View style={styles.appBar}>
         <Ionicons name="arrow-back" size={24} color="black" onPress={() => router.push('/Cart')} />
         <Text style={styles.header}>Order</Text>
@@ -66,11 +67,16 @@ export default function OrderBody() {
           </View>
         </View>
       </Modal> */}
+    
+  </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+ ScrollView: {
+   padding: 20,
+ },
   container: {
     flex: 1,
     backgroundColor: '#fff',

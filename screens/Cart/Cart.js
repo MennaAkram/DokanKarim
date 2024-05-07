@@ -86,7 +86,6 @@ export default function Cart({}) {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={{flex: 1}}>
         <View style={styles.appbar}>
           <Text style={styles.Text}>Your Cart</Text>
           <View style={styles.line} />
@@ -98,7 +97,6 @@ export default function Cart({}) {
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ paddingBottom: 100 }} // Adjust paddingBottom to accommodate Checkout button
         />
-      </ScrollView>
       
       <View style={styles.checkoutContainer}>
         <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>

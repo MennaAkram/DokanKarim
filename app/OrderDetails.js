@@ -36,20 +36,20 @@ export default function OrderDetails() {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.appBar}>
+      {/* <View style={styles.appBar}>
         <Ionicons name="arrow-back" size={24} color="black" onPress={() => router.push('/OrderBody')} />
         <Text style={styles.header}>Order Details</Text>
       </View>
       <View style={styles.lineDivider}></View>
-      <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: 14, margin: 10, }}>Product</Text>
+      <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: 14, margin: 10, }}>Product</Text> */}
 
-      <FlatList
-        data={cartItems}
-        renderItem={renderCartItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingBottom: 10 }} // Adjust paddingBottom to accommodate Checkout button
-      />
-
+<FlatList
+  data={cartItems}
+  renderItem={renderCartItem}
+  keyExtractor={(item) => item.id}
+  contentContainerStyle={{ paddingBottom: 10 }}
+  scrollEnabled={false} // Set scrollEnabled to false to stop scrolling
+/>
       {/* Shipping Details */}
       <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: 14, margin: 10 }}>Shipping Details</Text>
       <View style={styles.shippingDetails}>
@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    
   },
   appBar: {
     backgroundColor: '#fff',

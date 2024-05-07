@@ -19,7 +19,7 @@ function RootLayoutNav() {
         <Stack.Screen name="Notifications" options={{ headerShown: false }} />
         <Stack.Screen name="Order" options={{ headerShown: false }} />
         
-        <Stack.Screen name="OrderDetails" options={{headerShown:false}}/>
+        <Stack.Screen name="Order Details"/>
       </Stack>
   );
 }
