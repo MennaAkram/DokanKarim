@@ -1,6 +1,6 @@
 import { View, StyleSheet, Dimensions } from "react-native";
 import React from "react";
-import { useNavigation } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import Button from "../../../components/Button";
 import Input from "../components/Input";
 import Picker from "../components/ImagePicker";
@@ -8,8 +8,11 @@ import Colors from "../../../costants/Colors";
 import ComponentTitle from "../../../components/componentTitle";
 import SelectSizes from "../components/SelectSizes";
 import SelectColors from "../components/SelectColors";
+import { addProduct } from "../../../firebase/markets";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../../../firebase/firebaseConfig";
 
-const AddProduct = ({ id }) => {
+const AddProduct = () => {
   const [productName, setProductName] = React.useState("");
   const [price, setPrice] = React.useState("");
   const [count, setCount] = React.useState("");
@@ -17,13 +20,35 @@ const AddProduct = ({ id }) => {
   const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL", "+"]
   const colors = [ Colors.primary, Colors.blueText, Colors.border, Colors.red,
         Colors.greyText, Colors.yellow, "#f0f0f0", "#000000", "#ff0000", "+"]
+  const { marketId, CategoryId, marketName, CategoryName } = useLocalSearchParams();
+  console.log(marketId, CategoryId);
   const navigation = useNavigation();
   navigation.setOptions({
     title: "Add Product",
   });
 
-  const handleAddProduct = (productId) => {
-    navigation.navigate("Products", { productId, productName, selectedImages });
+  const handleAddProduct = async () => {
+    if (!selectedImages || selectedImages.length === 0) {
+      alert('Please select an image.');
+      return;
+    }
+    const imageUrls = await Promise.all(
+      selectedImages.map(async (imageUri) => {
+        const response = await fetch(imageUri);
+        const blob = await response.blob();
+        const storageRef = ref(storage, `products/${productName}/${imageUri.split('/').pop()}`);
+        await uploadBytes(storageRef, blob);
+        const url = await getDownloadURL(storageRef);
+        return url;
+      })
+    );
+
+    if (imageUrls.includes(undefined)) {
+      alert('Failed to upload image.');
+      return;
+    }
+    addProduct(marketId, CategoryId, productName, price, count, sizes, colors, imageUrls);
+    navigation.navigate("Products", { marketId, CategoryId, marketName, CategoryName});
   };
 
   return (
@@ -54,9 +79,9 @@ const AddProduct = ({ id }) => {
       <SelectSizes sizes={sizes}/>
       <SelectColors colors={colors}/>
       <ComponentTitle title="Product Images"/>
-      <Picker onImagesSelected={setSelectedImages}/>
+      <Picker onImagesSelected={setSelectedImages} allowsMultipleSelection={true}/>
       <View style={styles.Button}>
-        <Button text="Save" onPress={() => handleAddProduct(id)} />
+        <Button text="Save" onPress={handleAddProduct} />
       </View>
     </View>
   );
@@ -77,22 +102,15 @@ const styles = StyleSheet.create({
   },
   input: {
     alignItems: 'center',
-    marginHorizontal: 16,
     flexDirection: 'row',
-    borderWidth: 1,
-    borderRadius: 5,
+    width: windowWidth - 32,
     height: 48,
-    borderColor: Colors.border,
 },
 semiInput: {
-    width: windowWidth / 2 - 24,
+    width: windowWidth / 2.6 - 24,
     alignItems: 'center',
-    marginStart: 16,
     flexDirection: 'row',
-    borderWidth: 1,
-    borderRadius: 5,
     height: 48,
-    borderColor: Colors.border,
 },
 });
 

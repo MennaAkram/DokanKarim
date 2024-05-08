@@ -6,10 +6,11 @@ const windowWidth = Dimensions.get('window').width
 
 export default function Input ({image, onChangeText, value, placeholderTextColor, style}) {
   return (
-    <View style={style}>
+    <View style={styles.input}>
     <Image source={image} 
     style={styles.image}/>
         <TextInput
+        style={style}
         placeholder={placeholderTextColor}
         placeholderTextColor={Colors.greyText}
         value={value}
@@ -26,4 +27,13 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 10,
     },
+    input: {
+    alignItems: "center",
+    marginHorizontal: 16,
+    flexDirection: "row",
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: Colors.border,
+    height: 48,
+  },
     })

@@ -5,9 +5,11 @@ import Button from "../../../components/Button";
 import Input from "../components/Input";
 import Picker from "../components/ImagePicker";
 import ComponentTitle from "../../../components/componentTitle";
-import Colors from "../../../costants/Colors";
+import { addMarket } from "../../../firebase/markets";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../../../firebase/firebaseConfig";
 
-const AddMarket = ({ id }) => {
+const AddMarket = () => {
   const [marketName, setMarketName] = React.useState("");
   const [selectedImages, setSelectedImages] = React.useState();
   const navigation = useNavigation();
@@ -15,8 +17,29 @@ const AddMarket = ({ id }) => {
     title: "Add Market",
   });
 
-  const handleAddMarket = (marketId) => {
-    navigation.navigate("Markets", { marketId, marketName, selectedImages });
+  const handleAddMarket = async () => {
+    if (!selectedImages || selectedImages.length === 0) {
+      alert('Please select an image.');
+      return;
+    }
+    const imageUrls = await Promise.all(
+      selectedImages.map(async (imageUri) => {
+        const response = await fetch(imageUri);
+        const blob = await response.blob();
+        const storageRef = ref(storage, `markets/${marketName}/${imageUri.split('/').pop()}`);
+        await uploadBytes(storageRef, blob);
+        const url = await getDownloadURL(storageRef);
+        return url;
+      })
+    );
+
+    if (imageUrls.includes(undefined)) {
+      alert('Failed to upload image.');
+      return;
+    }
+  
+    await addMarket(marketName, imageUrls);
+    navigation.navigate("Markets");
   };
 
   return (
@@ -30,16 +53,17 @@ const AddMarket = ({ id }) => {
       />
     <View style={styles.imagePicker}>
       <ComponentTitle title="Market Images"/>
-      <Picker onImagesSelected={setSelectedImages}/>
+      <Picker onImagesSelected={setSelectedImages} allowsMultipleSelection={false}/>
       </View>
       <View style={styles.Button}>
-        <Button text="Save" onPress={() => handleAddMarket(id)} />
+        <Button text="Save" onPress={() => handleAddMarket()} />
       </View>
     </View>
   );
 };
 
 const windowHeight = Dimensions.get("window").height;
+const windowWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   container: {
@@ -47,13 +71,10 @@ const styles = StyleSheet.create({
     height: windowHeight - 80,
   },
   input: {
-    alignItems: 'center',
-    marginHorizontal: 16,
-    flexDirection: 'row',
-    borderWidth: 1,
-    borderRadius: 5,
+    alignItems: "center",
+    flexDirection: "row",
+    width: windowWidth - 32,
     height: 48,
-    borderColor: Colors.border,
 },
   Button: {
     margin: 16,

@@ -5,7 +5,7 @@ import { FAB } from 'react-native-paper';
 import Colors from '../../../costants/Colors';
 import ComponentTitle from '../../../components/componentTitle';
 
-export default function Picker({ onImagesSelected }) {
+export default function Picker({ onImagesSelected, allowsMultipleSelection }) {
   const [images, setImages] = useState([]);
 
   const pickImages = async () => {
@@ -14,7 +14,7 @@ export default function Picker({ onImagesSelected }) {
       allowsEditing: false,
       aspect: [4, 3],
       quality: 1,
-      allowsMultipleSelection: true,
+      allowsMultipleSelection: allowsMultipleSelection,
       orderedSelection: true,
     });
 
@@ -27,7 +27,6 @@ export default function Picker({ onImagesSelected }) {
   return (
       <View style={styles.imagesContainer}>
         {images.map((image, index) => {
-          console.log("URI: ", image);
           return(
           <Image key={index} source={{ uri: image }} style={styles.image} />
         )

@@ -2,47 +2,43 @@ import { View, Text, FlatList, StyleSheet, Dimensions, Pressable } from "react-n
 import React, { useEffect, useState } from "react";
 import { Appbar, FAB } from "react-native-paper";
 import Colors from "../../../costants/Colors";
-import { router, useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import ProductCard from "../../../components/ProductCard";
 import ComponentTitle from "../../../components/componentTitle";
+import { getProducts } from "../../../firebase/markets";
 
 const windowHeight = Dimensions.get("window").height;
 
-const Produts = ({marketId, categoryId}) => {
-//   const { id, categoryName, selectedIcon } = useLocalSearchParams();
+const Produts = () => {
+  const navigation = useNavigation();
+  const { CategoryId, CategoryName, marketId, marketName } = useLocalSearchParams();
   const [produts, setProducts] = useState([]);
+  console.log(marketId, CategoryId);
 
-  const handleAddProduct = (id) => {
-    const newProduct = {
-      id: produts.length + 1,
-      productName: productName,
-        marketName: marketName,
-        price: price,
-        sizes: sizes,
-        colors: colors,
-        reviews: reviews,
-        images: selectedImages,
-    };
-    setProducts([...produts, newProduct]);
+  const handleAddProduct = async () => {
+    const products = await getProducts(marketId, CategoryId);
+    console.log(products);
+    setProducts(products);
   };
 
   useEffect(() => {
-    if (categoryId) {
-        handleAddProduct(categoryId);
+    if (marketId, CategoryId) {
+      handleAddProduct(marketId, CategoryId);
     }
-  }, [categoryId]);
+  }
+  , [marketId, CategoryId]);
 
   return (
     <View>
       <Appbar.Header style={{backgroundColor: Colors.onPrimary}}>
         <Appbar.BackAction onPress={() => router.back()} />
         <Appbar.Content
-          title="market.marketName"
+          title={marketName}
           style={styles.text}
           color={Colors.primary}
         />
       </Appbar.Header>
-      <ComponentTitle title="Category Name" />
+      <ComponentTitle title={CategoryName} />
       <View style={styles.container}>
         {(produts.length === 0 && (
           <Text style={styles.emptyText}>No products yet add your first product now!!!</Text>
@@ -54,14 +50,14 @@ const Produts = ({marketId, categoryId}) => {
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
           <ProductCard
-            id = {item.id}
-            titleText={item.productName}
-            marketName={item.marketName}
-            priceText={item.price}
+            id={item.id}
+            titleText={item.name}
+            marketName={marketName}
+            priceText={item.price + "$"}
             sizes={item.sizes}
             colors={item.colors}
             reviews={item.reviews}
-            images={item.images}
+            images={item.images[0]}
           />
         )}
       />
@@ -70,7 +66,7 @@ const Produts = ({marketId, categoryId}) => {
           icon="plus"
           style={styles.fab}
           color={Colors.onPrimary}
-          onPress={() => router.push("AddProduct")}
+          onPress={() => navigation.navigate("AddProduct", { marketId: marketId, CategoryId: CategoryId, marketName: marketName, CategoryName: CategoryName})}
         />
       </View>
     </View>
@@ -80,7 +76,6 @@ const Produts = ({marketId, categoryId}) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.onPrimary,
-    justifyContent: "center",
     alignItems: "center",
     height: windowHeight - 112,
   },

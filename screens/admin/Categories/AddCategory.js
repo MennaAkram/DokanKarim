@@ -7,80 +7,39 @@ import {
   ScrollView,
   Pressable,
 } from "react-native";
-import React from "react";
-import { useNavigation } from "expo-router";
+import React, { useCallback } from "react";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import Button from "../../../components/Button";
 import Input from "../components/Input";
-import Picker from "../components/ImagePicker";
 import ComponentTitle from "../../../components/componentTitle";
 import Colors from "../../../costants/Colors";
+import { addCategory } from "../../../firebase/markets";
 
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
-const AddCategory = ({ id }) => {
+const AddCategory = () => {
   const icons = [
     require("../../../assets/images/dress.png"),
     require("../../../assets/icons/Bank.png"),
     require("../../../assets/icons/CreditCard.png"),
     require("../../../assets/icons/Search.png"),
     require("../../../assets/images/manbag.png"),
-    require("../../../assets/images/dress.png"),
-    require("../../../assets/icons/Bank.png"),
     require("../../../assets/images/shirt.png"),
-    require("../../../assets/images/dress.png"),
-    require("../../../assets/icons/Bank.png"),
-    require("../../../assets/icons/CreditCard.png"),
-    require("../../../assets/icons/Search.png"),
-    require("../../../assets/images/manbag.png"),
-    require("../../../assets/images/dress.png"),
-    require("../../../assets/icons/Bank.png"),
-    require("../../../assets/images/dress.png"),
-    require("../../../assets/icons/Bank.png"),
-    require("../../../assets/icons/CreditCard.png"),
-    require("../../../assets/icons/Search.png"),
-    require("../../../assets/images/manbag.png"),
-    require("../../../assets/images/dress.png"),
-    require("../../../assets/icons/Bank.png"),
-    require("../../../assets/images/dress.png"),
-    require("../../../assets/icons/Bank.png"),
-    require("../../../assets/icons/CreditCard.png"),
-    require("../../../assets/icons/Search.png"),
-    require("../../../assets/images/manbag.png"),
-    require("../../../assets/images/dress.png"),
-    require("../../../assets/icons/Bank.png"),
-    require("../../../assets/images/dress.png"),
-    require("../../../assets/icons/Bank.png"),
-    require("../../../assets/icons/CreditCard.png"),
-    require("../../../assets/icons/Search.png"),
-    require("../../../assets/images/manbag.png"),
-    require("../../../assets/images/dress.png"),
-    require("../../../assets/icons/Bank.png"),
-    require("../../../assets/images/dress.png"),
-    require("../../../assets/icons/Bank.png"),
-    require("../../../assets/icons/CreditCard.png"),
-    require("../../../assets/icons/Search.png"),
-    require("../../../assets/images/manbag.png"),
-    require("../../../assets/images/dress.png"),
-    require("../../../assets/icons/Bank.png"),
-    require("../../../assets/images/dress.png"),
-    require("../../../assets/icons/Bank.png"),
-    require("../../../assets/icons/CreditCard.png"),
-    require("../../../assets/icons/Search.png"),
-    require("../../../assets/images/manbag.png"),
-    require("../../../assets/images/dress.png"),
-    require("../../../assets/icons/Bank.png"),
   ];
   const [categoryName, setCategoryName] = React.useState("");
   const [selectedIcon, setSelectedIcon] = React.useState(null);
+  const { marketId } = useLocalSearchParams();
   const navigation = useNavigation();
   navigation.setOptions({
     title: "Add Category",
   });
 
-const handleAddCategory= (id) => {
-    navigation.navigate("Categories", { id, categoryName, selectedIcon });
-  }
+  const handleAddCategory = () => {
+    addCategory(marketId, categoryName, selectedIcon);
+    console.log("Category Added");
+    navigation.navigate("Categories", { marketId });
+  };
 
   return (
     <View style={styles.container}>
@@ -97,16 +56,22 @@ const handleAddCategory= (id) => {
           <View style={styles.imageContainer}>
             {icons.map((item, index) => (
               <Pressable
-                style={item === selectedIcon && selectedIcon ? styles.selectedImage :styles.Image}
-                onPress={() => setSelectedIcon(item)}>
-                <Image source={item} key={index} />
+              key={index}
+                style={
+                  item === selectedIcon && selectedIcon
+                    ? styles.selectedImage
+                    : styles.Image
+                }
+                onPress={() => setSelectedIcon(item)}
+              >
+                <Image source={item}/>
               </Pressable>
             ))}
           </View>
         </ScrollView>
       </View>
       <View style={styles.Button}>
-        <Button text="Save" onPress={() => handleAddCategory(id)} />
+        <Button text="Save" onPress={handleAddCategory} />
       </View>
     </View>
   );
@@ -148,14 +113,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   input: {
-    alignItems: 'center',
-    marginHorizontal: 16,
-    flexDirection: 'row',
-    borderWidth: 1,
-    borderRadius: 5,
+    alignItems: "center",
+    flexDirection: "row",
+    width: windowWidth - 32,
     height: 48,
-    borderColor: Colors.border,
-},
+  },
 });
 
 export default AddCategory;

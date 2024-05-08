@@ -1,32 +1,24 @@
-import { View, Text, FlatList, StyleSheet, Dimensions, Pressable } from "react-native";
+import { View, Text, FlatList, StyleSheet, Dimensions, Pressable, Image } from "react-native";
 import React, { useEffect } from "react";
 import MarketCard from "./MarketCard";
 import { Appbar, FAB } from "react-native-paper";
 import Colors from "../../../costants/Colors";
-import { useNavigation, router, useLocalSearchParams } from "expo-router";
+import { useNavigation, router } from "expo-router";
+import { getMarkets } from "../../../firebase/markets";
 
 const windowHeight = Dimensions.get("window").height;
 
 const Markets = () => {
-  const { marketId, marketName, selectedImages } = useLocalSearchParams();
   const [markets, setMarkets] = React.useState([]);
   const navigation = useNavigation();
 
-  const handleAddMarket = (marketId) => {
-    const newMarket = {
-      id: markets.length + 1,
-      marketName: marketName,
-      images: selectedImages,
-    };
-    setMarkets([...markets, newMarket]);
-  };
-
   useEffect(() => {
-    if (marketId) {
-      handleAddMarket(marketId);
-    }
-  }, [marketId]);
-console.log("Markets", markets); 
+    getMarkets().then((markets) => {
+      setMarkets(markets);
+    });
+  }
+  , []);
+
   return (
     <View>
       <Appbar.Header style={{backgroundColor: Colors.onPrimary}}>
@@ -48,10 +40,9 @@ console.log("Markets", markets);
           <FlatList
             data={markets}
             renderItem={(item) => {
-              console.log("Item: ", item);
               return (
-                <Pressable onPress={() => navigation.navigate("Categories", { market: item })}>
-              <MarketCard marketName={item.item.marketName} images={item.item.images} />
+                <Pressable onPress={() => navigation.navigate("Categories", { marketId: item.item.id, marketName: item.item.name })}>
+              <MarketCard marketName={item.item.name} images={item.item.image[0]} />
               </Pressable>
             )
             }}

@@ -4,17 +4,12 @@ import Colors from "../../../costants/Colors";
 import { ErrorBoundary } from "expo-router";
 
 const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
-const MarketCard = ({marketName, images}) => {
+const MarketCard = ({ marketName, images }) => {
   return (
     <View style={styles.container}>
-          {images.map((image, index) => {
-            console.log("URI: ", image);
-            // fix image issue
-            return(
-            <Image key={index} source={require("../../../assets/images/MarketCard.png")} style={styles.image} />
-          )
-          })}
+      <Image source={{ uri: images }} style={styles.image} />
       <Text style={styles.text}>{marketName}</Text>
     </View>
   );
@@ -24,13 +19,14 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.onPrimary,
     borderRadius: 12,
-    width: windowWidth -32,
+    width: windowWidth - 32,
     margin: 16,
-},
-image: {
+  },
+  image: {
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     width: windowWidth - 32,
+    height: windowHeight / 4.7,
   },
   text: {
     fontSize: 16,

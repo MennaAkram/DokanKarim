@@ -1,65 +1,81 @@
-import { View, Text, FlatList, StyleSheet, Dimensions, Pressable, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Dimensions,
+  Pressable,
+  ScrollView,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { Appbar, FAB } from "react-native-paper";
 import Colors from "../../../costants/Colors";
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import CategoryItem from "../../Home/components/category/categoryItem";
+import { getCategories } from "../../../firebase/markets";
 
 const windowHeight = Dimensions.get("window").height;
 
-const Categories = ({marketId}) => {
-  const { id, categoryName, selectedIcon } = useLocalSearchParams();
+const Categories = () => {
+  const { marketId, marketName } = useLocalSearchParams();
   const [categories, setCategories] = useState([]);
-    const navigation = useNavigation();
-
-  const handleAddCategory = (id) => {
-    const newCategory = {
-      id: categories.length + 1,
-      categoryName: categoryName,
-      image: selectedIcon,
-    };
-    setCategories([...categories, newCategory]);
-  };
+  const navigation = useNavigation();
 
   useEffect(() => {
-    if (id) {
-        handleAddCategory(id);
+    if (marketId) {
+      getCategories(marketId).then((categories) => {
+        setCategories(categories);
+      });
     }
-  }, [id]);
+  }, [marketId]);
 
   return (
     <View>
-      <Appbar.Header style={{backgroundColor: Colors.onPrimary}}>
+      <Appbar.Header style={{ backgroundColor: Colors.onPrimary }}>
         <Appbar.BackAction onPress={() => router.back()} />
         <Appbar.Content
-          title="market.marketName"
+          title={marketName}
           style={styles.text}
           color={Colors.primary}
         />
       </Appbar.Header>
       <View style={styles.container}>
         {(categories.length === 0 && (
-          <Text style={styles.emptyText}>No categories yet add your first category now!!!</Text>
+          <Text style={styles.emptyText}>
+            No categories yet add your first category now!!!
+          </Text>
         )) || (
-            <ScrollView>
-          <View style={styles.itemContainer}>
-            {categories.map((item, index) => (
-                <CategoryItem text={item.categoryName} image={item.image} onPress={() => navigation.navigate("Products", { id: item.id })}/>
-            ))}
-          </View>
-        </ScrollView>
-        )} 
+          <ScrollView>
+            <View style={styles.itemContainer}>
+              {categories.map((item, index) => (
+                <CategoryItem
+                  text={item.name}
+                  image={item.icon}
+                  onPress={() =>
+                    navigation.navigate("Products", {
+                      CategoryId: item.id,
+                      CategoryName: item.name,
+                      marketId: marketId,
+                      marketName: marketName,
+                    })
+                  }
+                />
+              ))}
+            </View>
+          </ScrollView>
+        )}
         <FAB
           icon="plus"
           style={styles.fab}
           color={Colors.onPrimary}
-          onPress={() => router.push("/AddCategory")}
+          onPress={() =>
+            navigation.navigate("AddCategory", { marketId: marketId })
+          }
         />
       </View>
     </View>
   );
 };
-// };
 
 const styles = StyleSheet.create({
   container: {

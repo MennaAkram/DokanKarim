@@ -7,14 +7,13 @@ import { useNavigation } from "expo-router";
 
 export default function ProductCard({
   id,
-  image,
   titleText,
   marketName,
   priceText,
   sizes,
   colors,
   reviews,
-  images
+  images,
 }) {
   const navigation = useNavigation();
     const [isFavorite, setIsFavorite] = React.useState(false);
@@ -23,13 +22,13 @@ export default function ProductCard({
     };
 
     const handleProductPress = (productId) => {
-      navigation.navigate('productDetails', { productId, titleText, priceText, sizes, colors, image, reviews, images});
+      navigation.navigate('productDetails', { productId, titleText, priceText, sizes, colors, reviews, images});
     }
     
     return (
       <Pressable style={styles.container}
     onPress={() => handleProductPress(id)}>
-      <Image style={styles.image} source={image} />
+      <Image style={styles.image} source={images} />
       <View style={styles.textContainer}>
         <Text style={styles.titleText}>{titleText}</Text>
         <Text style={styles.marketName}>{marketName}</Text>
