@@ -5,11 +5,12 @@ import { AntDesign } from "@expo/vector-icons";
 import React, { useState, Component } from "react";
 import { CountryPicker } from "react-native-country-codes-picker";
 import { launchCameraAsync,launchImageLibraryAsync } from "expo-image-picker";
+import {firebase}from "../../FireBaseConfig/firebaseConfig"
 const signup = () => {
   //  here some state to get the fileds value
   const [cCode, setCountryCode] = useState("");
   const [showPicker, setShowPicker] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [Loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [image, setImage] = useState(null);
   const [username, setUsername] = useState("");
@@ -32,29 +33,44 @@ const saveImage =async (image)=>{
     }
 
 }
-const handleSignup = () => {
+registerUser = async (email, password, phone,pic,username) => {
+  const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password)
+  .then(()=>{
+    firebase.auth().currentUser.sendEmailVerification({
+      handleCodeInApp:true,
+      url: 'https://dokankarim-5bd6b.firebaseapp.com'
+    }),then(()=>{
+    alert('A verification email has been sent to your registered address. Please verify your account to proceed.');
+    }).catch((error) => {
+      // Handle errors here
+      const errorCode = error.code;
+      let errorMessage;
 
-  if (!username || !password || !confirmPassword || !email || !phone) {
-    alert("All fields are required!");
-    return;
-  }
-  else if(password != confirmPassword){
-    setError("password not matched");
-  }
-else{
-  setError("");
-  setIsLoading(true);
-  setTimeout(() => {
-    setIsLoading(false);
-    alert("Signup successful!");
-  }, 2000);
-  console.log(username);
-  console.log(password);
-  console.log(confirmPassword);
-  console.log(phone);
-  console.log(password);
-  console.log(email);
-}};
+      switch (errorCode) {
+        case 'auth/weak-password':
+          errorMessage = 'The password is too weak.';
+          break;
+        case 'auth/email-already-in-use':
+          errorMessage = 'The email address is already in use by another account.';
+          break;
+        case 'auth/invalid-email':
+          errorMessage = 'The email address is invalid.';
+          break;
+        default:
+          errorMessage = 'An error occurred during registration. Please try again.';
+      }
+
+      alert(errorMessage);
+  }).then(()=>{
+    firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid)
+    .set({
+      email,phone,pic,username
+    })
+  })
+})
+}
+
+  
 
 const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
@@ -77,7 +93,7 @@ const uploadImage =async()=>
 
   return (
     <View style={styles.container}>
-      {isLoading ? (
+      {Loading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="small" color="#a4b443" />
           <Text>Wait a sec :)</Text>
@@ -106,6 +122,7 @@ const uploadImage =async()=>
             <MaterialIcons name="lock" size={20} color="black" style={styles.icon} />
             <TextInput
               style={styles.input}
+              value={password}
               placeholder="Password"
               placeholderTextColor="#888"
               secureTextEntry={true}
@@ -132,6 +149,7 @@ const uploadImage =async()=>
             <MaterialIcons name="email" size={20} color="black" style={styles.icon} />
             <TextInput
               style={styles.input}
+              value={email}
               placeholder="Email"
               placeholderTextColor="#888"
               onChangeText={(text)=>setEmail(text)}
@@ -164,7 +182,7 @@ const uploadImage =async()=>
          value={isEnabled}
       />
       </View> */}
-          <Pressable style={styles.submitButton} onPress={handleSignup}>
+          <Pressable style={styles.submitButton} onPress={()=>registerUser(email, password, phone,image,username)}>
             <Text style={styles.submitText}>Sign Up</Text>
           </Pressable>
            <Modal

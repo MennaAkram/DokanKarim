@@ -1,64 +1,73 @@
-import React, { Component } from 'react';
-import { View, TextInput, StyleSheet, Image, Pressable, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, TextInput, StyleSheet, Image, Pressable, Text,ActivityIndicator} from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
-
-
-export class Login extends Component {
-  render() {
-    return (
-
-      <View style={styles.container}>
-
-
-        <Image source={require("../../assets/images/logo.png")} style={styles.logo} /> 
-        
-        
-        <View style={styles.inputContainer}>
-          <MaterialIcons name="email" size={20} color="black" style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your email"
-            placeholderTextColor="#888"
-          />
-        </View>
-   
-        <View style={styles.inputContainer}>
-          <MaterialIcons name="lock" size={20} color="black" style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your password"
-            placeholderTextColor="#888"
-            secureTextEntry={true}
-          />
-        </View>
-   
-
-        <Pressable onPress={this.handleLogin} style={styles.loginButton}>
+import { Link, router } from 'expo-router';
+import { firebase } from "../../FireBaseConfig/firebaseConfig";
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading]=useState(false);
+  const handleLogin = async (email,password) => {
+    setLoading(true);
+  
+    try {
+      const response = await firebase.auth().signInWithEmailAndPassword(email, password); 
+      console.log("login suc"); 
+      router.push("Home")
+    } 
+    catch (error) {
+      alert('Sign up faild'+error.message)
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  return (
+    <View style={styles.container}>
+      <Image source={require("../../assets/images/logo.png")} style={styles.logo} />
+      <View style={styles.inputContainer}>
+        <MaterialIcons name="email" size={20} color="black" style={styles.icon} />
+        <TextInput
+          style={styles.input}
+          value={email}
+          autoCapitalize='none'
+          autoCorrect={false}
+          placeholder="Enter your email"
+          placeholderTextColor="#888"
+          onChangeText={(text) => setEmail(text)}
+        />
+      </View>
+      <View style={styles.inputContainer}>
+        <MaterialIcons name="lock" size={20} color="black" style={styles.icon} />
+        <TextInput
+          style={styles.input}
+          value={password}
+            autoCapitalize='none'
+          autoCorrect={false}
+          placeholder="Enter your password"
+          placeholderTextColor="#888"
+          secureTextEntry={true}
+          onChangeText={(text) => setPassword(text)}
+        />
+      </View>
+      <Pressable onPress={()=>handleLogin(email,password)} style={styles.loginButton}>
+      {loading ? (
+          <ActivityIndicator size="small" color="white" /> 
+        ) : (
           <Text style={styles.loginText}>Login</Text>
-        </Pressable>
-        
-
-        <View style={styles.linecontainer}>
+        )}
+      </Pressable>
+      <View style={styles.linecontainer}>
         <View style={styles.ortext}></View>
         <Text>or</Text>
         <View style={styles.ortext}></View>
-        </View>
-        <Text style={styles.signupLinkText}>Don't have an account? </Text>
-        <Link href={"/signup"} style={styles.signupLinkText}>Sign Up
-        </Link>
-
-        </View>
-       
-    );
-  }
-
-  handleLogin = () => {
-    // Logic for handling login
-    console.log("Login button pressed");
-    // You can add your logic here for login authentication
-  };
-}
+      </View>
+      <Text style={styles.signupLinkText}>Don't have an account? </Text>
+      <Link href={"/signup"} style={styles.signupLinkText}>Sign Up</Link>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   linecontainer:{

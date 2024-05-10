@@ -10,19 +10,16 @@ import {
   Modal,
 } from "react-native";
 import ModalProf from "../components/ModalProf";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   horizontalScale,
   verticalScale,
   moderateScale,
 } from "../costants/Matrcies";
 import { router } from "expo-router";
-
+import{firebase}from"../FireBaseConfig/firebaseConfig"
 export default function Profile() {
   const [error,setError]=useState('');
-  const [nameModal, setNameModal] = useState(false);
-  const [PhoneModal, setPhoneModal] = useState(false);
-  const [PasswordModal, setPasswordModal] = useState(false);
   const[password,setPassword]=useState("karemmohamed")
   const[newpassword,setNewPassword]=useState("")
   const [EmailModal, setEmailModal] = useState(false);
@@ -31,9 +28,20 @@ export default function Profile() {
   const [newPhone, setNewPhone] = useState("");
   const [Phone, setPhone] = useState("");
   const [email, setEmail] = useState("")
-  const [newEmail, setNewEmail] =useState('')
+  const [newEmail, setNewEmail] =useState('');
+  const [user,setuser]=useState("");
+  useEffect(()=>{
+    firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).get()
+    .then((snapshot)=>{
+      if(snapshot.exists){
+        setuser(snapshot.data())
+      }
+      else{
+        console.log("User does not exist")
+      }
+    })
+  },[])
   const onNamepressed = () => {
-    // setNameModal(true);
     router.push("ChangeName")
   };
 
@@ -100,11 +108,11 @@ export default function Profile() {
       <View style={styles.profileContainer}>
         <Image
           style={styles.Profilepic}
-          source={require("../assets/images/logo.png")}
+          source={user.pic}
         />
         <View style={styles.textContainer}>
           <TouchableOpacity style={styles.nameText} onPress={onNamepressed}>
-            <Text>{username}</Text>
+            <Text>{user.username}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -114,7 +122,7 @@ export default function Profile() {
           <Text style={styles.Text}>Email</Text>
           <View style={styles.sideTextContainer}>
             <Text style={styles.sidetext} numberOfLines={1}>
-              {email}
+              {user.email}
             </Text>
           </View>
           <Image source={require("../assets/icons/Right.png")} />
@@ -127,7 +135,7 @@ export default function Profile() {
           <Text style={styles.Text}>Phone</Text>
           <View style={styles.sideTextContainer}> 
             <Text style={styles.sidetext} numberOfLines={1}>
-              {Phone}
+              {user.phone}
             </Text>
           </View>
           <Image source={require("../assets/icons/Right.png")} />
@@ -140,8 +148,7 @@ export default function Profile() {
           <Text style={styles.Text}>Change password</Text>
           <View style={[styles.sideTextContainer, styles.proto]}>
             <Text style={styles.sidetext} numberOfLines={1}>
-              {" "}
-              ****************
+              {user.password}
             </Text>
           </View>
           <Image source={require("../assets/icons/Right.png")} />

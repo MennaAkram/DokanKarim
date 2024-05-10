@@ -1,48 +1,69 @@
 import { Link ,router} from "expo-router";
-import { useState} from "react";
+import { useState,useEffect} from "react";
 import {horizontalScale, verticalScale, moderateScale} from '../../costants/Matrcies';
 import { View, Image, StyleSheet ,Text, TouchableOpacity,Alert } from "react-native";
-
+import{firebase}from '../../FireBaseConfig/firebaseConfig'
 export default function User() {
   const [profilepressed, setProfilepressed] = useState(false);
   const [orderpressed, setOrderpressed] = useState(false);
   const [Paymentpressed, setPaymentpressed] = useState(false);
   const [Addrasspressed, setAdresspressed] = useState(false);
-  const [isLogined,setLogin]=useState(true);
-  function Profile(Login) {
-    if (Login) {
+  const [isLogined,setLogin]=useState(false);
+  const [initializing,setInitializing] = useState(true);
+  const[user,setUser]=useState(false)
+function onAuthStateChanged(user) {
+  setUser(user);
+  if (initializing) {
+    setInitializing(false);
+  }
+}
+
+useEffect(() => {
+  const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
+
+  return subscriber;
+}, []);
+
+ if(initializing) return null
+ 
+ 
+ 
+ 
+ 
+  const Profile = ()=>{
+    if (user) {
       router.push("Profile");
     } else {
         console.log("here is there")
       Alert.alert("Login Required", "Please Login to view the profile.");
-      router.push("Login");
+      router.push("/login");
     }
   }
   
-  const Order = (Login) => {
-    if (Login) {
+  const Order = () => {
+    if (user) {
       router.push("Order");
     } else {
       Alert.alert("Login Required", "Please Login to view your orders.");
-      router.push("../(auth)/Login");
+      router.push("/login");
     }
   };
   
-  const Payment = (Login) => {
-    if (Login) {
+  const Payment = () => {
+    if (user) {
       router.push("Payment");
     } else {
       Alert.alert("Login Required", "Please Login to view payment information.");
-      router.push("../(auth)/Login");
+  router.push("/login");
     }
   };
   
-  const Addresses = (Login) => {
-    if (Login) {
+  const Addresses = () => {
+    if (user) {
       router.push("Address");
     } else {
       Alert.alert("Login Required", "Please Login to view your addresses.");
-      router.push("../(auth)/Login");
+  router.push("/login");
     }
   };
   return (
