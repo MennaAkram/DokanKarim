@@ -43,9 +43,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
     width: '100%',
-    height: '100%',
   },
   appBar: {
     backgroundColor: '#fff',
@@ -95,6 +93,5 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    height: '100%',
-  },
+    height: 70,},
 });
