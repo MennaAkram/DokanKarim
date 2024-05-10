@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, TextInput, StyleSheet, Image, Pressable, Text,ActivityIndicator} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 import { MaterialIcons } from '@expo/vector-icons';
 import { Link, router } from 'expo-router';
 import { firebase } from "../../FireBaseConfig/firebaseConfig";
@@ -7,12 +8,27 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading]=useState(false);
+  useEffect(() => {
+    checkLoggedInStatus(); 
+  }, []);
+
+  const checkLoggedInStatus = async () => {
+    try {
+      const userToken = await AsyncStorage.getItem('userToken');
+      if (userToken) {
+        // Navigate to Home if user is already logged in
+      }
+    } catch (error) {
+      console.error('Error reading user token from AsyncStorage:', error);
+  }
+};
   const handleLogin = async (email,password) => {
     setLoading(true);
   
     try {
       const response = await firebase.auth().signInWithEmailAndPassword(email, password); 
       console.log("login suc"); 
+      await AsyncStorage.setItem('userToken', response.user.uid);
       router.push("Home")
     } 
     catch (error) {

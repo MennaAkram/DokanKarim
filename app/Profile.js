@@ -1,15 +1,13 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 import {
   View,
   Image,
   Text,
   StyleSheet,
-  TextInput,
-  Alert,
   TouchableOpacity,
   SafeAreaView,
   Modal,
 } from "react-native";
-import ModalProf from "../components/ModalProf";
 import React, { useEffect, useState } from "react";
 import {
   horizontalScale,
@@ -22,7 +20,6 @@ export default function Profile() {
   const [error,setError]=useState('');
   const[password,setPassword]=useState("karemmohamed")
   const[newpassword,setNewPassword]=useState("")
-  const [EmailModal, setEmailModal] = useState(false);
   const [username, setUserName] = useState("KimoElfager");
   const [newname, setNewname] = useState("");
   const [newPhone, setNewPhone] = useState("");
@@ -31,16 +28,31 @@ export default function Profile() {
   const [newEmail, setNewEmail] =useState('');
   const [user,setuser]=useState("");
   useEffect(()=>{
-    firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).get()
+    firebase.firestore().collection('users').
+    doc(firebase.auth().currentUser.uid).get()
     .then((snapshot)=>{
       if(snapshot.exists){
         setuser(snapshot.data())
       }
       else{
+        router.push("login")
         console.log("User does not exist")
       }
     })
   },[])
+  const handleLogout = () => {
+    firebase.auth().signOut()
+      .then(() => {
+        
+        console.log("User logged out");
+        const userToken = AsyncStorage.setItem(null)
+        router.push("login");
+      })
+      .catch(error => {
+        // Handle logout error
+        console.error("Logout error:", error);
+      });
+  };
   const onNamepressed = () => {
     router.push("ChangeName")
   };
@@ -152,6 +164,13 @@ export default function Profile() {
             </Text>
           </View>
           <Image source={require("../assets/icons/Right.png")} />
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={()=>handleLogout} style={styles.item}>
+       <View style={[styles.icontext,{fontSize:30,borderRadius:moderateScale(60),backgroundColor:'#40BFFF',flex:1,height:moderateScale(50),alignItems:"center",margin:"13%",justifyContent:"center"}]}>
+        <Text style={{fontSize:moderateScale(20)}} >
+          Sign Out
+        </Text>
         </View>
       </TouchableOpacity>
     </SafeAreaView>

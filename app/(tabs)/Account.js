@@ -34,7 +34,6 @@ useEffect(() => {
     if (user) {
       router.push("Profile");
     } else {
-        console.log("here is there")
       Alert.alert("Login Required", "Please Login to view the profile.");
       router.push("/login");
     }

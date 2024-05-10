@@ -6,6 +6,7 @@ import React, { useState, Component } from "react";
 import { CountryPicker } from "react-native-country-codes-picker";
 import { launchCameraAsync,launchImageLibraryAsync } from "expo-image-picker";
 import {firebase}from "../../FireBaseConfig/firebaseConfig"
+
 const signup = () => {
   //  here some state to get the fileds value
   const [cCode, setCountryCode] = useState("");
@@ -40,6 +41,7 @@ registerUser = async (email, password, phone,pic,username) => {
       handleCodeInApp:true,
       url: 'https://dokankarim-5bd6b.firebaseapp.com'
     }),then(()=>{
+      
     alert('A verification email has been sent to your registered address. Please verify your account to proceed.');
     }).catch((error) => {
       // Handle errors here
@@ -62,6 +64,7 @@ registerUser = async (email, password, phone,pic,username) => {
 
       alert(errorMessage);
   }).then(()=>{
+    console.log("here  kimo")
     firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid)
     .set({
       email,phone,pic,username
