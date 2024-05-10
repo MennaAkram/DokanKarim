@@ -1,9 +1,22 @@
-import { Text, StyleSheet, View, Image, FlatList, ScrollView } from 'react-native';
+import { Text, StyleSheet, View, Image, FlatList, ScrollView, Keyboard } from 'react-native';
+import { useEffect } from 'react';
+import { getOrders } from '../firebase/orders';
 import React, { useState } from 'react';
+import {firebase} from '../firebase/config';
 import { Ionicons } from '@expo/vector-icons';
 import { items } from '../screens/notifications/Item'; // Import the items array
 
 export default function OrderDetails() {
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const userId = '555'; // Replace with the actual user ID
+      const orders = await getOrders(userId);
+      console.log('Orders:', orders);
+    };
+
+    fetchOrders();
+  }, []);
+  
   const [cartItems, setCartItems] = useState(items);
 
   const onPressHeart = (itemId) => {

@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import {firebasae} from '../../firebase/config';
+import { addOrder } from '../../firebase/orders';
+import 'firebase/firestore'; // If you're using Firestore
+import firebase from 'firebase/app';
+
 import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList, ScrollView } from 'react-native'; // Import AsyncStorage
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { items } from '../notifications/Item';
+import CartCard from './components/CartCard';
 
 export default function Cart({}) {
+  const userId = "57755ff";
+  const productId = ['777ff','8888ff','9999ff']
   const router = useRouter();
   const [cartItems, setCartItems] = useState([]);
 
@@ -86,34 +94,25 @@ export default function Cart({}) {
 
   const renderCartItem = ({ item }) => {
     return (
-      <View style={styles.cart_container}>
-        <Image style={styles.image} source={{ uri: item.imageUrl }} />
-        <View style={{ marginLeft: 20 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ width: '60%' }}>{item.name}</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
-              <Ionicons name="heart" size={16} color={item.heartClicked ? 'white' : 'red'} onPress={() => onPressHeart(item.id)} />
-              <Ionicons name="trash-bin" size={16} style={{ marginLeft: 10 }} 
-                color={item.deleteClicked ? 'white' : 'black'} onPress={() => onPressDelete(item.id)} />
-            </View>
-          </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ marginTop: 5 }}> ${item.totalPrice}</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10 }}>
-              <Ionicons name="remove-circle" size={24} color="black" onPress={() => handleDecrement(item.id)}/>
-              <Text style={{ marginHorizontal: 5 }}>{item.quantity}</Text>
-              <Ionicons name="add-circle" size={24} color="black" onPress={() => handleIncrement(item.id)}/>
-            </View>
-          </View>
-        </View>
+      <View>
+        <CartCard 
+        onPressHeart={() => onPressHeart(item.id)} 
+        onPressDelete={() => onPressDelete(item.id)} 
+        handleDecrement={() => handleDecrement(item.id)} 
+        handleIncrement={() => handleIncrement(item.id)} 
+        item={item}/>
       </View>
     );
   };
 
-  const handleCheckout = () => {
-    // Implement your checkout send the item list to the firebase
-    router.replace("/CartSucces");
+  const handleCheckout =() => {
+      addOrder(userId,productId);
+      // Navigate to the success page
+      router.replace("/CartSucces");
+   
   };
+  
+  
 
   return (
     <View style={styles.container}>
