@@ -35,23 +35,13 @@ export default function Profile() {
         setuser(snapshot.data())
       }
       else{
-        router.push("login")
         console.log("User does not exist")
       }
     })
   },[])
   const handleLogout = () => {
-    firebase.auth().signOut()
-      .then(() => {
-        
-        console.log("User logged out");
-        const userToken = AsyncStorage.setItem(null)
-        router.push("login");
-      })
-      .catch(error => {
-        // Handle logout error
-        console.error("Logout error:", error);
-      });
+ 
+    
   };
   const onNamepressed = () => {
     router.push("ChangeName")
@@ -120,7 +110,7 @@ export default function Profile() {
       <View style={styles.profileContainer}>
         <Image
           style={styles.Profilepic}
-          source={user.pic}
+          source={{uri:user.pic}}
         />
         <View style={styles.textContainer}>
           <TouchableOpacity style={styles.nameText} onPress={onNamepressed}>
@@ -166,7 +156,17 @@ export default function Profile() {
           <Image source={require("../assets/icons/Right.png")} />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity onPress={()=>handleLogout} style={styles.item}>
+      <TouchableOpacity onPress={()=>{firebase.auth().signOut()
+      .then(() => {
+        console.log("User logged out");
+       
+        const userToken = AsyncStorage.setItem(null)
+        router.replace("login");
+      })
+      .catch(error => {
+        // Handle logout error
+        console.error("Logout error:", error);
+      });}} style={styles.item}>
        <View style={[styles.icontext,{fontSize:30,borderRadius:moderateScale(60),backgroundColor:'#40BFFF',flex:1,height:moderateScale(50),alignItems:"center",margin:"13%",justifyContent:"center"}]}>
         <Text style={{fontSize:moderateScale(20)}} >
           Sign Out

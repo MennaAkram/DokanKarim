@@ -25,81 +25,68 @@ const signup = () => {
     setCountryCode(item.dial_code);
     setShowPicker(false);
   };
-const saveImage =async (image)=>{
-    try {
-        setImage(image);
-    setModalVisible(false);
-    } catch (error) {
-        throw  error
-    }
-
-}
 registerUser = async (email, password, phone,pic,username) => {
+  if (!(password === confirmPassword)) {
+  setError("the password not matched")
+  return;
+  }else if(!email||!password ||!phone ||!username){
+    setError("all fields are required")
+    return;
+  }
+  setLoading(true)
+    setError("");
   const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password)
   .then(()=>{
     firebase.auth().currentUser.sendEmailVerification({
       handleCodeInApp:true,
       url: 'https://dokankarim-5bd6b.firebaseapp.com'
-    }),then(()=>{
       
+    }).then(()=>{
+      setLoading(false);
     alert('A verification email has been sent to your registered address. Please verify your account to proceed.');
+    }).then(()=>{
+      
+      firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid)
+      .set({
+        email,phone,pic,username,password
+      })
+      router.push("login")
     }).catch((error) => {
-      // Handle errors here
+     setLoading(false);
       const errorCode = error.code;
       let errorMessage;
-
       switch (errorCode) {
         case 'auth/weak-password':
-          errorMessage = 'The password is too weak.';
-          break;
+           setError( 'The password is too weak.');
+           
+           break;
         case 'auth/email-already-in-use':
-          errorMessage = 'The email address is already in use by another account.';
+          setError('The email address is already in use by another account.');
+          
           break;
         case 'auth/invalid-email':
-          errorMessage = 'The email address is invalid.';
+          setError( 'The email address is invalid.');
+     
           break;
         default:
-          errorMessage = 'An error occurred during registration. Please try again.';
+         
+          setError( 'An error occurred during registration. Please try again.');
       }
 
       alert(errorMessage);
-  }).then(()=>{
-    console.log("here  kimo")
-    firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid)
-    .set({
-      email,phone,pic,username
-    })
   })
 })
-}
-
-  
-
-const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-
-  const handleUploadPhoto = () => {
-    setModalVisible(true); 
-  };
-
-const uploadImage =async()=>
-{
-    try {
-    const response =await launchImageLibraryAsync()
-      setImage(response.assets[0].uri)
  
-        
-    } catch (error) {
-        alert("there is an error")
-        setModalVisible(flase)
-    }
 }
+
+ 
 
   return (
     <View style={styles.container}>
       {Loading ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="small" color="#a4b443" />
-          <Text>Wait a sec :)</Text>
+          <ActivityIndicator size="large" color="#a4b443" />
+          <Text>Wait a seconde</Text>
         </View>
       ) : (
         <>
@@ -111,7 +98,6 @@ const uploadImage =async()=>
               <AntDesign name="camera" size={24} color="black" />
             </Pressable>
           </View>
-          {/* Dokkan Kareem logo in assets images */}
           <View style={styles.inputContainer}>
             <AntDesign name="user" style={styles.icon} size={24} color="black" />
             <TextInput
@@ -131,7 +117,7 @@ const uploadImage =async()=>
               secureTextEntry={true}
               onChangeText={(text)=>setPassword(text)}
             />
-            <Text style={{color:'red',marginLeft:10}}>{error}</Text>
+            
           </View>
           <View style={styles.inputContainer}>
             <MaterialIcons
@@ -162,7 +148,9 @@ const uploadImage =async()=>
             <Pressable onPress={() => setShowPicker(true)}>
               <AntDesign name="phone" style={styles.icon} size={24} color="black" />
             </Pressable>
+            
             <CountryPicker
+              style={{flex:1,height:"30%"}}
               show={showPicker}
               pickerButtonOnPress={handlePickerButtonPress}
             />
@@ -185,25 +173,11 @@ const uploadImage =async()=>
          value={isEnabled}
       />
       </View> */}
+      <Text style={{color:'red',marginLeft:10}}>{error}</Text>
           <Pressable style={styles.submitButton} onPress={()=>registerUser(email, password, phone,image,username)}>
             <Text style={styles.submitText}>Sign Up</Text>
           </Pressable>
-           <Modal
-            animationType="fade"
-            transparent={true}
-            style={styles.modalView}
-            visible={modalVisible}
-            onRequestClose={() => setModalVisible(false)}
-          >
-            <View style={styles.modalView}>
-              <Pressable onPress={() => setModalVisible(false)}>
-                <Text style={styles.closeModalText}>Close</Text>
-              </Pressable>
-              
-              <Text>Upload Photo</Text>
-            </View>
-          </Modal>
-       
+        
         </>
       )}
     </View>

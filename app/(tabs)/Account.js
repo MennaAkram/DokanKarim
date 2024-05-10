@@ -8,29 +8,35 @@ export default function User() {
   const [orderpressed, setOrderpressed] = useState(false);
   const [Paymentpressed, setPaymentpressed] = useState(false);
   const [Addrasspressed, setAdresspressed] = useState(false);
-  const [isLogined,setLogin]=useState(false);
   const [initializing,setInitializing] = useState(true);
-  const[user,setUser]=useState(false)
-function onAuthStateChanged(user) {
-  setUser(user);
-  if (initializing) {
-    setInitializing(false);
-  }
-}
+ 
+  const [user, setUser] = useState(null);
 
-useEffect(() => {
-  const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
-
-  return subscriber;
-}, []);
-
- if(initializing) return null
- 
- 
- 
- 
- 
-  const Profile = ()=>{
+  useEffect(() => {
+    const checklogin = async () => {
+      try {
+        const userDoc = await firebase.firestore()
+          .collection('users')
+          .doc(firebase.auth().currentUser.uid)
+          .get();
+  
+        if (userDoc.exists) {
+          setUser(true);
+        } else {
+          setUser(false);
+        }
+      } catch (error) {
+        console.error('Error checking login:', error);
+        setUser(false);
+      }
+    };
+  
+    checklogin();
+    const unsubscribe = firebase.auth().onAuthStateChanged(checklogin);
+    return () => unsubscribe();
+  }, []);
+  
+  const Profile = (user)=>{
     if (user) {
       router.push("Profile");
     } else {
@@ -39,7 +45,7 @@ useEffect(() => {
     }
   }
   
-  const Order = () => {
+  const Order = (user) => {
     if (user) {
       router.push("Order");
     } else {
@@ -48,7 +54,7 @@ useEffect(() => {
     }
   };
   
-  const Payment = () => {
+  const Payment = (user) => {
     if (user) {
       router.push("Payment");
     } else {
@@ -57,7 +63,7 @@ useEffect(() => {
     }
   };
   
-  const Addresses = () => {
+  const Addresses = (user) => {
     if (user) {
       router.push("Address");
     } else {
@@ -67,22 +73,22 @@ useEffect(() => {
   };
   return (
     <View style={styles.listcontainer}>
-  <TouchableOpacity style={[styles.item]} onPress={() => Profile(isLogined)}>
+  <TouchableOpacity style={[styles.item]} onPress={() => Profile(user)}>
   <Image style={styles.icon} source={require("../../assets/icons/User.png")} />
   <Text style={styles.title}>Profile</Text>
 </TouchableOpacity>
 
-<TouchableOpacity style={[styles.item]} onPress={() => Order(isLogined)}>
+<TouchableOpacity style={[styles.item]} onPress={() => Order(user)}>
   <Image style={styles.icon} source={require("../../assets/icons/bag.png")} />
   <Text style={styles.title}>Order</Text>
 </TouchableOpacity>
 
-<TouchableOpacity style={[styles.item]} onPress={() => Payment(isLogined)}>
+<TouchableOpacity style={[styles.item]} onPress={() => Payment(user)}>
   <Image style={styles.icon} source={require("../../assets/icons/CreditCard.png")} />
   <Text style={styles.title}>Payment</Text>
 </TouchableOpacity>
 
-<TouchableOpacity style={[styles.item]} onPress={() => Addresses(isLogined)}>
+<TouchableOpacity style={[styles.item]} onPress={() => Addresses(user)}>
   <Image style={styles.icon} source={require("../../assets/icons/Location.png")} />
   <Text style={styles.title}>Addresses</Text>
 </TouchableOpacity>
