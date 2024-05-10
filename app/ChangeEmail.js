@@ -15,7 +15,6 @@ export class ChangeEmail extends Component {
   };
 
   handleSaveChanges = () => {
-    // You can implement the logic to handle saving changes here
     console.log('New Email:', this.state.newEmail);
     console.log('Password:', this.state.password);
   };
