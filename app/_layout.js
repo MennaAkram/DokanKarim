@@ -4,12 +4,9 @@ import { View } from "react-native";
 // SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
-  return <RootLayoutNav/>;
-
-
+  return <RootLayoutNav />;
 };
 function RootLayoutNav() {
-
   return (
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -18,6 +15,7 @@ function RootLayoutNav() {
         <Stack.Screen name="cart_succes" options={{ headerShown: false }} />
         <Stack.Screen name="Notifications" options={{ headerShown: false }} />
         <Stack.Screen name="Order" options={{ headerShown: false }} />
+        <Stack.Screen name="reviews" options={{ presentation: "reviews" }} />
         
         <Stack.Screen name="Order Details"/>
       </Stack>
