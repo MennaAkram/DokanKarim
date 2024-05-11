@@ -5,6 +5,8 @@ import { Appbar, FAB } from "react-native-paper";
 import Colors from "../../../costants/Colors";
 import { useNavigation, router } from "expo-router";
 import { getMarkets } from "../../../firebase/markets";
+import{firebase} from "../../../firebase/firebaseConfig"
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const windowHeight = Dimensions.get("window").height;
 
@@ -29,7 +31,17 @@ const Markets = () => {
         />
         <Appbar.Action
           icon="logout"
-          onPress={() => {}}
+          onPress={()=>{firebase.auth().signOut()
+      .then(() => {
+        console.log("User logged out");
+       
+        const userToken = AsyncStorage.setItem(null)
+        router.replace("login");
+      })
+      .catch(error => {
+        // Handle logout error
+        console.error("Logout error:", error);
+      });}}
           color={Colors.greyText}
         />
       </Appbar.Header>

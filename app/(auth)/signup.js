@@ -5,7 +5,7 @@ import { AntDesign } from "@expo/vector-icons";
 import React, { useState, Component } from "react";
 import { CountryPicker } from "react-native-country-codes-picker";
 import { launchCameraAsync,launchImageLibraryAsync } from "expo-image-picker";
-import {firebase}from "../../FireBaseConfig/firebaseConfig"
+import {firebase}from "../../firebase/firebaseConfig"
 
 const signup = () => {
   //  here some state to get the fileds value

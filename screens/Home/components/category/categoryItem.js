@@ -25,8 +25,8 @@ export default function CategoryItem ({onPress, image, text}) {
           color: Colors.greyText
         },
         image: {
-          width: 70,
-          height: 70,
+          width: 100,
+          height: 100,
           borderWidth: 1,
           borderRadius: 70,
           borderColor: Colors.border,

@@ -20,12 +20,12 @@ const windowWidth = Dimensions.get("window").width;
 
 const AddCategory = () => {
   const icons = [
-    require("../../../assets/images/dress.png"),
-    require("../../../assets/icons/Bank.png"),
-    require("../../../assets/icons/CreditCard.png"),
-    require("../../../assets/icons/Search.png"),
-    require("../../../assets/images/manbag.png"),
-    require("../../../assets/images/shirt.png"),
+   "../../../assets/images/dress.png",
+   "../../../assets/icons/Bank.png",
+   "../../../assets/icons/CreditCard.png",
+   "../../../assets/icons/Search.png",
+   "../../../assets/images/manbag.png",
+   "../../../assets/images/shirt.png",
   ];
   const [categoryName, setCategoryName] = React.useState("");
   const [selectedIcon, setSelectedIcon] = React.useState(null);
@@ -64,7 +64,7 @@ const AddCategory = () => {
                 }
                 onPress={() => setSelectedIcon(item)}
               >
-                <Image source={item}/>
+                <Image source={{uri:item}}/>
               </Pressable>
             ))}
           </View>

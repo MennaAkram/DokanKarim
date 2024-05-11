@@ -2,7 +2,6 @@ import { Text, StyleSheet, View, Image, FlatList, ScrollView, Keyboard } from 'r
 import { useEffect } from 'react';
 import { getOrders } from '../firebase/orders';
 import React, { useState } from 'react';
-import {firebase} from '../firebase/config';
 import { Ionicons } from '@expo/vector-icons';
 import { items } from '../screens/notifications/Item'; // Import the items array
 

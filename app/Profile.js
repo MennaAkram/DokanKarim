@@ -15,7 +15,7 @@ import {
   moderateScale,
 } from "../costants/Matrcies";
 import { router } from "expo-router";
-import{firebase}from"../FireBaseConfig/firebaseConfig"
+import{firebase} from "../firebase/firebaseConfig"
 export default function Profile() {
   const [error,setError]=useState('');
   const[password,setPassword]=useState("karemmohamed")

@@ -3,7 +3,7 @@ import { View, TextInput, StyleSheet, Image, Pressable, Text,ActivityIndicator} 
 import AsyncStorage from '@react-native-async-storage/async-storage'; 
 import { MaterialIcons } from '@expo/vector-icons';
 import { Link, router } from 'expo-router';
-import { firebase } from "../../FireBaseConfig/firebaseConfig";
+import { firebase } from "../../firebase/firebaseConfig";
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -23,22 +23,27 @@ const Login = () => {
       console.error('Error reading user token from AsyncStorage:', error);
   }
 };
-  const handleLogin = async (email,password) => {
-    setLoading(true);
-  
-    try {
-      const response = await firebase.auth().signInWithEmailAndPassword(email, password); 
-      console.log("login suc"); 
-      await AsyncStorage.setItem('userToken', response.user.uid);
-      router.push("Home")
-    } 
-    catch (error) {
-      alert('Sign up faild'+error.message)
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+
+const handleLogin = async (email,password) => {
+  setLoading(true);
+  try {
+    if(email=="admin@ad.com"){
+      console.log("hello admin"); 
+      router.push("Markets")
+    const response = await firebase.auth().signInWithEmailAndPassword(email, password); 
+    await AsyncStorage.setItem('userToken', response.user.uid);
+  }else{
+    const response = await firebase.auth().signInWithEmailAndPassword(email, password); 
+    await AsyncStorage.setItem('userToken', response.user.uid);
+    router.push("Home");
+  } }
+  catch (error) {
+    alert('Sign up faild'+error.message)
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
   
   return (
     <View style={styles.container}>

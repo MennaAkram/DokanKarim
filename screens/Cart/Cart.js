@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {firebasae} from '../../firebase/config';
 import { addOrder } from '../../firebase/orders';
-import 'firebase/firestore'; // If you're using Firestore
-import firebase from 'firebase/app';
-
+import 'firebase/firestore';
 import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList, ScrollView } from 'react-native'; // Import AsyncStorage
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { items } from '../notifications/Item';
 import CartCard from './components/CartCard';
 

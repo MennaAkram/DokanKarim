@@ -2,7 +2,7 @@ import { Link ,router} from "expo-router";
 import { useState,useEffect} from "react";
 import {horizontalScale, verticalScale, moderateScale} from '../../costants/Matrcies';
 import { View, Image, StyleSheet ,Text, TouchableOpacity,Alert } from "react-native";
-import{firebase}from '../../FireBaseConfig/firebaseConfig'
+import{firebase}from '../../firebase/firebaseConfig'
 export default function User() {
   const [profilepressed, setProfilepressed] = useState(false);
   const [orderpressed, setOrderpressed] = useState(false);

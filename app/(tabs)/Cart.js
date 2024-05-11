@@ -7,7 +7,7 @@ export default function User(){
     const router = useRouter();
     return (
         <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#ffff'}}>
-                <Markets/>
+                <Cart/>
         </View>
     )
 }
