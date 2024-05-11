@@ -25,60 +25,71 @@ const signup = () => {
     setCountryCode(item.dial_code);
     setShowPicker(false);
   };
-registerUser = async (email, password, phone,pic,username) => {
-  if (!(password === confirmPassword)) {
-  setError("the password not matched")
-  return;
-  }else if(!email||!password ||!phone ||!username){
-    setError("all fields are required")
+  registerUser = async (email, phone,pic,username) => {
+    if (!(password === confirmPassword)) {
+    setError("the password not matched")
     return;
-  }
-  setLoading(true)
-    setError("");
-  const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password)
-  .then(()=>{
-    firebase.auth().currentUser.sendEmailVerification({
-      handleCodeInApp:true,
-      url: 'https://dokankarim-5bd6b.firebaseapp.com'
-      
-    }).then(()=>{
-      setLoading(false);
-    alert('A verification email has been sent to your registered address. Please verify your account to proceed.');
-    }).then(()=>{
-      
-      firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid)
-      .set({
-        email,phone,pic,username,password
-      })
-      router.push("login")
-    }).catch((error) => {
-     setLoading(false);
-      const errorCode = error.code;
-      let errorMessage;
-      switch (errorCode) {
-        case 'auth/weak-password':
-           setError( 'The password is too weak.');
+    }else if(!email||!password ||!phone ||!username){
+      setError("all fields are required")
+      return;
+    }
+    
+      setError("");
+    const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(()=>{
+      firebase.auth().currentUser.sendEmailVerification({
+        handleCodeInApp:true,
+        url: 'https://dokankarim-5bd6b.firebaseapp.com'
+        
+      }).then(()=>{
+        setLoading(false);
+      alert('A verification email has been sent to your registered address. Please verify your account to proceed.');
+      }).then(()=>{
+        
+        firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid)
+        .set({
+          email,phone,pic,username,password
+        })
+        router.push("login")
+      }).catch((error) => {
+       setLoading(false);
+        const errorCode = error.code;
+        let errorMessage;
+        switch (errorCode) {
+          case 'auth/weak-password':
+             setError( 'The password is too weak.');
+             
+             break;
+          case 'auth/email-already-in-use':
+            setError('The email address is already in use by another account.');
+            
+            break;
+          case 'auth/invalid-email':
+            setError( 'The email address is invalid.');
+       
+            break;
+          default:
            
-           break;
-        case 'auth/email-already-in-use':
-          setError('The email address is already in use by another account.');
-          
-          break;
-        case 'auth/invalid-email':
-          setError( 'The email address is invalid.');
-     
-          break;
-        default:
-         
-          setError( 'An error occurred during registration. Please try again.');
-      }
-
-      alert(errorMessage);
+            setError( 'An error occurred during registration. Please try again.');
+        }
+    })
   })
-})
- 
-}
-
+   
+  }
+  const uploadImage = async () => {
+    try {
+      const result = await launchImageLibraryAsync();
+  
+      if (!result.cancelled) {
+        setImage(result.uri);
+      } else {
+        console.log("Image selection cancelled");
+      }
+    } catch (error) {
+      console.error("Image upload error:", error);
+    }
+  };
+  
  
 
   return (
@@ -91,12 +102,14 @@ registerUser = async (email, password, phone,pic,username) => {
       ) : (
         <>
           <Image
-            source={image ? { uri: image } : require('../../assets/images/logo.png')}
-            style={styles.logo}
-          /><View style={styles.circle}>
-            <Pressable onPress={uploadImage}  style={styles.changephoto}>
-              <AntDesign name="camera" size={24} color="black" />
-            </Pressable>
+        source={image ? { uri: image } : require("../../assets/images/logo.png")}
+        style={styles.logo}
+      />
+      <View style={styles.circle}>
+      <Pressable onPress={uploadImage} style={styles.changephoto}>
+          <AntDesign name="camera" size={24} color="black" />
+        </Pressable>
+
           </View>
           <View style={styles.inputContainer}>
             <AntDesign name="user" style={styles.icon} size={24} color="black" />
@@ -174,7 +187,7 @@ registerUser = async (email, password, phone,pic,username) => {
       />
       </View> */}
       <Text style={{color:'red',marginLeft:10}}>{error}</Text>
-          <Pressable style={styles.submitButton} onPress={()=>registerUser(email, password, phone,image,username)}>
+          <Pressable style={styles.submitButton} onPress={()=>registerUser(email, phone,image,username)}>
             <Text style={styles.submitText}>Sign Up</Text>
           </Pressable>
         
