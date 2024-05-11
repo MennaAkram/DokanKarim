@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import Colors from '../../../../costants/Colors';
 
-export default function MarketCard ({image, title}) {
+export default function MarketCard ({image, name}) {
     return (
         <View style={styles.container}>
-        <Image source={image} style={styles.image} resizeMode='contain'/>
-        <Text style={styles.title}>{title}</Text>
+        <Image source={{uri: image}} style={styles.image} resizeMode='contain'/>
+        <Text style={styles.title}>{name}</Text>
         </View>
     )
 }

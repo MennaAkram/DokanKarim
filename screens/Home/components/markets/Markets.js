@@ -1,25 +1,28 @@
 import { FlatList, View, StyleSheet } from "react-native";
 import MarketCard from "./MarketCard";
+import { useEffect, useState } from "react";
+import { getMarkets } from "../../../../firebase/markets"
 
 export default function Markets () {
-    const DATA = [
-        {image: require('../../../../assets/images/product.png'), text: 'Market name'},
-        {image: require('../../../../assets/images/product.png'), text: 'Market name'},
-        {image: require('../../../../assets/images/product.png'), text: 'Market name'},
-        {image: require('../../../../assets/images/product.png'), text: 'Market name'},
-        {image: require('../../../../assets/images/product.png'), text: 'Market name'},
-    ];
+  const [ markets, setMarkets ] = useState([])
 
+  useEffect(() => {
+    getMarkets().then((markets) => {
+      setMarkets(markets);
+    });
+  }, []);
+  
+console.log(markets)
   return (
     <View style={styles.container}>
         <FlatList 
         horizontal 
         showsHorizontalScrollIndicator={false}
-        data={DATA}
+        data={markets}
         renderItem={({item, index}) => 
         <MarketCard
-        image={item.image} 
-        title={item.text}
+        image={item.image[0]} 
+        name={item.name}
         />}
         />
     </View>

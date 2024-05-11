@@ -11,7 +11,7 @@ function RootLayoutNav() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        {/* <Stack.Screen name="Markets" options={{ headerShown: false }} />
+        <Stack.Screen name="Markets" options={{ headerShown: false }} />
         <Stack.Screen name="Categories" options={{ headerShown: false }} />
         <Stack.Screen name="Products" options={{ headerShown: false }} />
         <Stack.Screen name="productDetails" options={{ headerShown: false}} />
@@ -19,7 +19,7 @@ function RootLayoutNav() {
         <Stack.Screen name="Notifications" options={{ headerShown: false }} />
         <Stack.Screen name="Order" options={{ headerShown: false }} />
         <Stack.Screen name="reviews" options={{ presentation: "reviews" }} />
-        <Stack.Screen name="Order Details"/> */}
+        <Stack.Screen name="Order Details"/>
       </Stack>
   );
 }

@@ -18,12 +18,12 @@ export default function Home () {
     <SafeAreaView>
     <StatusBar/>
     <FlatList
-    showsVerticalScrollIndicator={false}
+    showsVerticalScrollIndicator={true}
     data={[{}]}
     renderItem={({item}) => <>
-      <SearchBar/>
+      {/* <SearchBar/> */}
       <Silder images={images} />
-      <ComponentTiltle title='Category' subTitle='More Category'/>
+      <ComponentTiltle title='Category' subTitle='See More'onPress={() => router.navigate("/SeeAllCategories")}/>
       <Category/>
       <ComponentTiltle title='Markets' subTitle='See More' onPress={() => router.navigate("/SeeAllMarkets")}/>
       <Markets/>

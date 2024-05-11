@@ -1,17 +1,17 @@
 import { View, Text, FlatList, StyleSheet, Dimensions } from "react-native";
 import React, { useEffect } from "react";
-import MarketCard from "../../../admin/Markets/MarketCard";
 import Colors from "../../../../costants/Colors";
 import { getMarkets } from "../../../../firebase/markets"
+import CategoryItem from "./categoryItem";
 
 const windowHeight = Dimensions.get("window").height;
 
-const SeeAllMarkets = () => {
-  const [markets, setMarkets] = React.useState([]);
+const SeeAllCategories = () => {
+  const [categories, setCategories] = React.useState([]);
 
   useEffect(() => {
-    getMarkets().then((markets) => {
-      setMarkets(markets);
+    getMarkets().then((categories) => {
+      setCategories(categories);
     });
   }, []);
 
@@ -19,10 +19,10 @@ const SeeAllMarkets = () => {
     <View>
       <View style={styles.container}>
           <FlatList
-            data={markets}
+            data={categories}
             renderItem={(item) => {
               return (
-              <MarketCard marketName={item.item.name} images={item.item.image[0]} />
+              <CategoryItem image={item.item.icon} text={item.item.name} />
             )
             }}
             keyExtractor={(item, index) => index.toString()}
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SeeAllMarkets;
+export default SeeAllCategories;

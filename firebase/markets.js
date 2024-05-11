@@ -83,3 +83,32 @@ export const getProducts = async (marketId, categoryId) => {
   });
   return productsList;
 };
+
+// get all categories in all markets
+export const getAllCategories = async () => {
+  const marketsSnapshot = await getDocs(collection(db, "markets"));
+  const categoriesList = [];
+  for (const market of marketsSnapshot.docs) {
+    const categoriesSnapshot = await getDocs(collection(db, "markets", market.id, "categories"));
+    for (const category of categoriesSnapshot.docs) {
+      categoriesList.push({ ...category.data(), id: category.id, marketId: market.id });
+    }
+  }
+  return categoriesList;
+};
+
+// get all products in all categories in all markets
+export const getAllProducts = async () => {
+  const marketsSnapshot = await getDocs(collection(db, "markets"));
+  const productsList = [];
+  for (const market of marketsSnapshot.docs) {
+    const categoriesSnapshot = await getDocs(collection(db, "markets", market.id, "categories"));
+    for (const category of categoriesSnapshot.docs) {
+      const productsSnapshot = await getDocs(collection(db, "markets", market.id, "categories", category.id, "products"));
+      for (const product of productsSnapshot.docs) {
+        productsList.push({ ...product.data(), id: product.id, marketId: market.id, categoryId: category.id });
+      }
+    }
+  }
+  return productsList;
+};
