@@ -28,7 +28,7 @@ export default function ProductCard({
     return (
       <Pressable style={styles.container}
     onPress={() => handleProductPress(id)}>
-      <Image style={styles.image} source={images} />
+      <Image style={styles.image} source={images[0]} />
       <View style={styles.textContainer}>
         <Text style={styles.titleText}>{titleText}</Text>
         <Text style={styles.marketName}>{marketName}</Text>

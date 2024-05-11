@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
 import React from "react";
 import Colors from "../../../costants/Colors";
-import { ErrorBoundary } from "expo-router";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
