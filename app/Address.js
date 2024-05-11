@@ -1,7 +1,6 @@
-import { StyleSheet, Text, View,TextInput,Button } from 'react-native'
+import { StyleSheet, Text, View,TextInput,Button, ScrollView } from 'react-native'
 import React from 'react'
 import { useState } from 'react';
-import { ScrollView } from 'react-native-web'
 import {
   horizontalScale,
   verticalScale,

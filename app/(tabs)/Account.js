@@ -26,7 +26,6 @@ export default function User() {
           setUser(false);
         }
       } catch (error) {
-        console.error('Error checking login:', error);
         setUser(false);
       }
     };
